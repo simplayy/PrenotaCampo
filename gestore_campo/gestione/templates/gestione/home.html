@@ -29,16 +29,16 @@
 
 {% if user.is_staff %}
 <br>
-<a href="{% url 'registerb' %}" class="list-group-item list-group-item-danger">Iscrivi un dirigente</a>
+<a  class="list-group-item list-group-item-danger">Iscrivi un dirigente</a>
 <br>
 {% endif %}
 
 
 {% if "Bibliotecari" in user.groups.all.0.name or user.is_staff %}
 <br>
-<a href="{% url 'gestione:situazionecampo' %}" class="list-group-item list-group-item-warning">Situazione Campi</a>
-<a href="{% url 'gestione:creacampo' %}" class="list-group-item list-group-item-warning">Aggiungi un Campo</a>
-<a href="{% url 'gestione:aggdisp' %}" class="list-group-item list-group-item-warning">Aggiungi una disponibil9ta</a>
+<a href="{% url 'gestione:home' %}" class="list-group-item list-group-item-warning">Situazione Campi</a>
+<a href="{% url 'gestione:home' %}" class="list-group-item list-group-item-warning">Aggiungi un Campo</a>
+<a href="{% url 'gestione:home' %}" class="list-group-item list-group-item-warning">Aggiungi una disponibil9ta</a>
 <br>
 {% endif %}
 
