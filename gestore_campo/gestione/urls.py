@@ -7,5 +7,5 @@ app_name = "gestione"
 
 urlpatterns = [
     path('', views.gestione_home,  name="home"),
-
+    path("listacampi/", views.CampoListView.as_view(),name="listacampi"),
 ]
