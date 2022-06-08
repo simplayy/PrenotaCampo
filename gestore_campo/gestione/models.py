@@ -3,10 +3,11 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Campo(models.Model):
-    id = models.IntegerField(default=100, primary_key=True)
+    id = models.IntegerField(default=1, primary_key=True)
     indirizzo = models.CharField(max_length=200)
     prezzo = models.FloatField(max_length=50)
-    mq = models.IntegerField(default=100)
+    mq = models.IntegerField(default=90)
+    giocatori = models.IntegerField(default=11)
     
 
 
