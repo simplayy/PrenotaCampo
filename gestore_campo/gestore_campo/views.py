@@ -14,3 +14,6 @@ class UserCreateView(CreateView):
     template_name = "user_create.html"
     success_url = reverse_lazy("login")
 
+class DirigenteCreateView(PermissionRequiredMixin, UserCreateView):
+    permission_required = "is_staff"
+    form_class = CreaUtenteDirigente

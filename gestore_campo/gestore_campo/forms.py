@@ -10,3 +10,12 @@ class CreaUtenteCliente(UserCreationForm):
         g = Group.objects.get(name="Clienti") #cerco il gruppo che mi interessa
         g.user_set.add(user) #aggiungo l'utente al gruppo
         return user #restituisco quello che il metodo padre di questo metodo avrebbe restituito.
+
+
+class CreaUtenteDirigente(UserCreationForm):
+    
+    def save(self, commit=True):
+        user = super().save(commit) 
+        g = Group.objects.get(name="Dirigenti") 
+        g.user_set.add(user) 
+        return user 
