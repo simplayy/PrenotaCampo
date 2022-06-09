@@ -11,4 +11,4 @@ class CreateCampoForm(forms.ModelForm):
 
     class Meta:
         model = Campo
-        fields = ["id","indirizzo","prezzo", "mq", "giocatori"]
+        fields = ["indirizzo","prezzo", "mq", "giocatori"]

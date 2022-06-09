@@ -1,28 +1,46 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator, MinValueValidator
+
 
 # Create your models here.
 class Campo(models.Model):
-    id = models.IntegerField(default=1, primary_key=True)
     indirizzo = models.CharField(max_length=200)
     prezzo = models.FloatField(max_length=50)
     mq = models.IntegerField(default=90)
     giocatori = models.IntegerField(default=11)
     
+class Giorno(models.Model):
+    giorno = models.PositiveSmallIntegerField(
+        choices=(
+            (1, "Lunedi"),
+            (2, "Martedi"),
+            (3, "Mercoledi"),
+            (4, "Giovedi"),
+            (5, "Venerdi"),
+            (6, "Sabato"),
+            (7, "Domenica")
+        )
+    )
+    campo = models.ForeignKey(Campo, on_delete=models.CASCADE, default=None, blank=True, null=True)
 
 
-class Prenotazione(models.Model):
-    data_prenotazione = models.DateField(default=None,null=True,blank=True)
-    ora_inizio = models.IntegerField(max_length=50)
-    ora_fine = models.IntegerField(max_length=50)
-    campo = models.ForeignKey(Campo,on_delete=models.CASCADE,related_name="prenotazioni")
-    utente = models.ForeignKey(User, on_delete=models.PROTECT,blank=True,null=True,default=None,related_name="campi_prenotati")
+class Ora(models.Model):
+    ora = models.PositiveSmallIntegerField(validators=[
+            MaxValueValidator(24),
+            MinValueValidator(1)
+        ])
+    giorni = models.ForeignKey(Giorno, on_delete=models.CASCADE, default=None, blank=True, null=True)
 
-    def chi_prenotato(self):
-        if self.utente == None: return None
-        return self.utente.username
 
     
-    def __str__(self):
-        return "Campo in via " + self.campo.indirizzo + " con id " + self.campo.id + " prenotato il " + str(self.data_prenotazione) + " per le  " + str(self.ora_inizio) + " fino alle  " + str(self.ora_fine) 
+
+
+
+    
+
+
+
+
+
 

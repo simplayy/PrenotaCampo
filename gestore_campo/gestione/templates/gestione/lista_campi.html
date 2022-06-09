@@ -21,15 +21,13 @@
     <h5 class="card-title">calcio a {{ c.giocatori }}</h5>
     <p class="card-text">Un campo di {{ c.societa }} in {{ c.indirizzo }} mq</p>
     <p class="card-text"> {{ c.prezzo }} $/h </p>
-    {% if l.disponibile %}
-    <a href="{% url 'gestione:prestito' l.pk %}" class="btn btn-info">
-    {% else %}
-    <a href="#" class="btn btn-info disabled">
-    {% endif %}
+   
+    <a  href="{% url 'gestione:detailcampo' c.pk %}" class="btn btn-info">
     Verifica Disponibilita'</a> 
 
   </div>
 </div>
+
 <br>
 {%endfor%}
 
