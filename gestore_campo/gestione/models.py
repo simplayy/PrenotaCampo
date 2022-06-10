@@ -9,6 +9,7 @@ class Campo(models.Model):
     prezzo = models.FloatField(max_length=50)
     mq = models.IntegerField(default=90)
     giocatori = models.IntegerField(default=11)
+    utente = models.ForeignKey(User, on_delete=models.PROTECT,blank=True,null=True,default=None,related_name="campi_posseduti")
     
 class Giorno(models.Model):
     giorno = models.PositiveSmallIntegerField(

@@ -10,5 +10,8 @@ class CreateCampoForm(forms.ModelForm):
     helper.add_input(Submit("submit","Aggiungi Campo"))
 
     class Meta:
-        model = Campo
-        fields = ["indirizzo","prezzo", "mq", "giocatori"]
+        model = Giorno
+        fields = ["giorno","campo"]
+
+
+    
