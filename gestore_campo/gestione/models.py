@@ -10,20 +10,27 @@ class Campo(models.Model):
     mq = models.IntegerField(default=90)
     giocatori = models.IntegerField(default=11)
     utente = models.ForeignKey(User, on_delete=models.PROTECT,blank=True,null=True,default=None,related_name="campi_posseduti")
+
+    def __str__(self):
+        return  self.indirizzo + " a "+ str(self.giocatori)
     
 class Giorno(models.Model):
-    giorno = models.PositiveSmallIntegerField(
+    giorno = models.CharField(
         choices=(
-            (1, "Lunedi"),
-            (2, "Martedi"),
-            (3, "Mercoledi"),
-            (4, "Giovedi"),
-            (5, "Venerdi"),
-            (6, "Sabato"),
-            (7, "Domenica")
-        )
+            ("Lunedi", "Lunedi"),
+            ("Martedi", "Martedi"),
+            ("Mercoledi", "Mercoledi"),
+            ("Giovedi", "Giovedi"),
+            ("Venerdi", "Venerdi"),
+            ("Sabato", "Sabato"),
+            ("Domenica", "Domenica")
+        ) ,  max_length=100,
     )
     campo = models.ForeignKey(Campo, on_delete=models.CASCADE, default=None, blank=True, null=True)
+
+    def __str__(self):
+        return self.giorno
+
 
 
 class Ora(models.Model):
@@ -31,7 +38,10 @@ class Ora(models.Model):
             MaxValueValidator(24),
             MinValueValidator(1)
         ])
-    giorni = models.ForeignKey(Giorno, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    giorno = models.ForeignKey(Giorno, on_delete=models.CASCADE, default=None, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.ora) +"h"
 
 
     

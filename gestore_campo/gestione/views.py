@@ -26,7 +26,35 @@ class CreateCampoView(CreateView):
     title = "Aggiungi un campo"
     form_class = CreateCampoForm
     template_name = "gestione/create_entry.html"
+    success_url = reverse_lazy("gestione:aggiungigiorno")
+
+    def get_form_kwargs(self):
+        kwargs = super(CreateCampoView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+class CreateGiornoView(CreateView):
+    title = "Aggiungi un giorno"
+    form_class = CreateGiornoForm
+    template_name = "gestione/create_entry.html"
     success_url = reverse_lazy("gestione:home")
+    def get_form_kwargs(self):
+        kwargs = super(CreateGiornoView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+class CreateOraView(CreateView):
+    title = "Aggiungi un ora "
+    form_class = CreateOraForm
+    template_name = "gestione/create_entry.html"
+    success_url = reverse_lazy("gestione:aggiungiora")
+        # def get_context_data(self, **kwargs):
+
+        # print(self.kwargs['pk'])
+    def get_form_kwargs(self):
+        kwargs = super(CreateOraView, self).get_form_kwargs()
+        kwargs['pk'] = self.kwargs['pk']
+        return kwargs
 
 
 class CampoDetailView(DetailView):
