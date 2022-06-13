@@ -44,6 +44,7 @@ class CreateGiornoView(CreateView):
     def get_form_kwargs(self):
         kwargs = super(CreateGiornoView, self).get_form_kwargs()
         kwargs['user'] = self.request.user
+        kwargs['pk_campo'] = self.kwargs['pk_campo']
         return kwargs
 
 class CreateOraView(CreateView):
@@ -51,12 +52,11 @@ class CreateOraView(CreateView):
     form_class = CreateOraForm
     template_name = "gestione/create_entry.html"
     success_url = reverse_lazy("gestione:aggiungiora")
-        # def get_context_data(self, **kwargs):
 
-        # print(self.kwargs['pk'])
     def get_form_kwargs(self):
         kwargs = super(CreateOraView, self).get_form_kwargs()
-        kwargs['pk'] = self.kwargs['pk']
+        kwargs['pk_campo'] = self.kwargs['pk_campo']
+        kwargs['pk_giorno'] = self.kwargs['pk_giorno']
         return kwargs
 
 
@@ -67,10 +67,6 @@ class CampoDetailView(DetailView):
     template_name = "gestione/detailcampo.html"
 
     def get_context_data(self, **kwargs):
-        """
-        This has been overridden to add `car` to the template context,
-        now you can use {{ car }} within the template
-        """
         context = super().get_context_data(**kwargs)
         context['giorno'] = Giorno.objects.filter(campo_id=self.kwargs['pk'])
         return context

@@ -21,20 +21,27 @@
     <p class="card-text"> 
       
     </p>
-    {% for g in giorno  %}
+    
     <br>
     Disponibilita':
+    {% for g in giorno  %}
     <ul class="list-group">
       <li class="list-group-item"> <h5>{{ g.giorno }} </h5>
-        <ahref="{% url 'gestione:home' %}" class="btn btn-outline-success" role="button" aria-pressed="true">Verifica Disponibilita</a>
-        <a href="#" class="btn btn-secondary" role="button" aria-pressed="true">Aggiungi Orari</a>
-
+        <a href="{% url 'gestione:listacampi' %}" class="btn btn-outline-success" role="button" aria-pressed="true">Verifica Disponibilita</a>
+        {% if "Dirigente" in user.groups.all.0.name or user.is_staff %}
+        <a href="{% url 'gestione:aggiungiora' g.campo_id g.id %}" class="btn btn-secondary" role="button" aria-pressed="true">Aggiungi Orari</a>
+        {% endif %}
       </li>
       
 
     </ul>
+   {%endfor%}
     <br>
-    {%endfor%}
+    
+    {% if "Dirigente" in user.groups.all.0.name or user.is_staff %}
+        <a href="{% url 'gestione:aggiungigiorno' object.pk %}" class="btn btn-secondary" role="button" aria-pressed="true">Aggiungi Giorno</a>
+        {% endif %}
+    
   </div>
 </div>
 {% comment %} <form>

@@ -32,25 +32,32 @@ class CreateGiornoForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         
+        pk_campo = kwargs.pop('pk_campo')
         user = kwargs.pop('user')
         super(CreateGiornoForm, self).__init__(*args, **kwargs)
         self.fields['campo']=forms.ModelChoiceField(queryset=Campo.objects.filter(utente=user))
-
+        self.fields['campo'].initial = pk_campo
 
 class CreateOraForm(forms.ModelForm):
     helper = FormHelper()
     helper.form_id = "addora_crispy_form"
     helper.form_method = "POST"
-    helper.add_input(Submit("submit","Aggiungi Giorno"))
+    helper.add_input(Submit("submit","Aggiungi Ora"))
 
     class Meta:
         model = Ora
         fields = ["ora", "giorno"]
 
     def __init__(self, *args, **kwargs):
-        pk = kwargs.pop('pk')
+
+        pk_giorno = kwargs.pop('pk_giorno')
+        pk_campo = kwargs.pop('pk_campo')
+        
+        
         super(CreateOraForm, self).__init__(*args, **kwargs)
-        self.fields['giorno']=forms.ModelChoiceField(queryset=Giorno.objects.filter(campo_id=pk))
+        self.fields['giorno']=forms.ModelChoiceField(queryset=Giorno.objects.filter(campo_id=pk_campo))
+        self.fields['giorno'].initial = pk_giorno
+        
 
 
 

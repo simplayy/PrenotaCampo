@@ -10,7 +10,7 @@ urlpatterns = [
     path("listacampi/", views.CampoListView.as_view(),name="listacampi"),
     path("detailcampo/<pk>/", views.CampoDetailView.as_view(), name="detailcampo"),
     path("aggiungicampo/",views.CreateCampoView.as_view(),name="aggiungicampo"),
-    path("aggiungigiorno/",views.CreateGiornoView.as_view(),name="aggiungigiorno"),
-    path("aggiungiora/<pk>/",views.CreateOraView.as_view(),name="aggiungiora"),
+    path("aggiungigiorno/<pk_campo>/",views.CreateGiornoView.as_view(),name="aggiungigiorno"),
+    path("aggiungiora/<pk_campo>/<pk_giorno>/",views.CreateOraView.as_view(),name="aggiungiora"),
     path("situationc/",views.CampiSituationView.as_view(),name="situationc")
 ]
