@@ -11,5 +11,6 @@ urlpatterns = [
     path("detailcampo/<pk>/", views.CampoDetailView.as_view(), name="detailcampo"),
     path("aggiungicampo/",views.CreateCampoView.as_view(),name="aggiungicampo"),
     path("aggiungigiorno/",views.CreateGiornoView.as_view(),name="aggiungigiorno"),
-    path("aggiungiora/<pk>/",views.CreateOraView.as_view(),name="aggiungiora")
+    path("aggiungiora/<pk>/",views.CreateOraView.as_view(),name="aggiungiora"),
+    path("situationc/",views.CampiSituationView.as_view(),name="situationc")
 ]

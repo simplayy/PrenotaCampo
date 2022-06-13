@@ -28,6 +28,10 @@ class Giorno(models.Model):
     )
     campo = models.ForeignKey(Campo, on_delete=models.CASCADE, default=None, blank=True, null=True)
 
+    class Meta:
+        unique_together = ('giorno', 'campo',)
+
+
     def __str__(self):
         return self.giorno
 

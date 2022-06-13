@@ -7,6 +7,9 @@ from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 # Create your views here.
 
+# pipenv install django-braces
+from braces.views import GroupRequiredMixin
+
 
 def gestione_home(request):
     return render(request,template_name="gestione/home.html")
@@ -59,5 +62,26 @@ class CreateOraView(CreateView):
 
 class CampoDetailView(DetailView):
     titolo = "Dettagli campo"
+    context_object_name = 'campo'
     model = Campo
     template_name = "gestione/detailcampo.html"
+
+    def get_context_data(self, **kwargs):
+        """
+        This has been overridden to add `car` to the template context,
+        now you can use {{ car }} within the template
+        """
+        context = super().get_context_data(**kwargs)
+        context['giorno'] = Giorno.objects.filter(campo_id=self.kwargs['pk'])
+        return context
+
+class CampiSituationView(GroupRequiredMixin, ListView):
+    group_required = ["Dirigente"]
+    model = Campo
+    template_name = "gestione/situationc.html"
+
+    def get_queryset(self):
+        return Campo.objects.filter(utente_id=self.request.user)
+
+
+    

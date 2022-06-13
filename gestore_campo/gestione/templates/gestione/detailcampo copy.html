@@ -21,20 +21,6 @@
     <p class="card-text"> 
       
     </p>
-    {% for g in giorno  %}
-    <br>
-    Disponibilita':
-    <ul class="list-group">
-      <li class="list-group-item"> <h5>{{ g.giorno }} </h5>
-        <ahref="{% url 'gestione:home' %}" class="btn btn-outline-success" role="button" aria-pressed="true">Verifica Disponibilita</a>
-        <a href="#" class="btn btn-secondary" role="button" aria-pressed="true">Aggiungi Orari</a>
-
-      </li>
-      
-
-    </ul>
-    <br>
-    {%endfor%}
   </div>
 </div>
 {% comment %} <form>
@@ -57,10 +43,6 @@
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form> {% endcomment %}
-
-
-
-
 <br>
 
 
