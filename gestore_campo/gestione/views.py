@@ -5,6 +5,8 @@ from django.views.generic.detail import DetailView
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
+from django.views.generic.edit import FormView
+import datetime
 # Create your views here.
 
 # pipenv install django-braces
@@ -70,6 +72,19 @@ class CampoDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['giorno'] = Giorno.objects.filter(campo_id=self.kwargs['pk'])
         return context
+
+
+class ContactFormView(FormView):
+    template_name = 'gestione/create_entry.html'
+    form_class = ContactForm
+    success_url = '/thanks/'
+
+    def form_valid(self, form):
+        # This method is called when valid form data has been POSTed.
+        # It should return an HttpResponse.
+        print(form.cleaned_data["date"].weekday())
+
+        return super().form_valid(form)
 
 class CampiSituationView(GroupRequiredMixin, ListView):
     group_required = ["Dirigente"]

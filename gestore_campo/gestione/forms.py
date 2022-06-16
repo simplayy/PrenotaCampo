@@ -61,4 +61,9 @@ class CreateOraForm(forms.ModelForm):
 
 
 
-    
+class ContactForm(forms.Form):
+    helper = FormHelper()
+    helper.form_id = "verificadata_crispy_form"
+    helper.form_method = "POST"
+    helper.add_input(Submit("submit","Vedi Orari"))
+    date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
