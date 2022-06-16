@@ -29,7 +29,7 @@ class Giorno(models.Model):
     campo = models.ForeignKey(Campo, on_delete=models.CASCADE, default=None, blank=True, null=True)
 
     class Meta:
-        unique_together = ('giorno', 'campo',)
+        unique_together = ('giorno', 'campo')
 
 
     def __str__(self):
@@ -43,7 +43,9 @@ class Ora(models.Model):
             MinValueValidator(1)
         ])
     giorno = models.ForeignKey(Giorno, on_delete=models.CASCADE, default=None, blank=True, null=True)
-
+    class Meta:
+        unique_together = ('giorno', 'ora')
+        
     def __str__(self):
         return str(self.ora) +"h"
 

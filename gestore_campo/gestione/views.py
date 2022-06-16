@@ -51,7 +51,7 @@ class CreateOraView(CreateView):
     title = "Aggiungi un ora "
     form_class = CreateOraForm
     template_name = "gestione/create_entry.html"
-    success_url = reverse_lazy("gestione:aggiungiora")
+    success_url = reverse_lazy("gestione/?operation=ok")
 
     def get_form_kwargs(self):
         kwargs = super(CreateOraView, self).get_form_kwargs()
@@ -74,7 +74,7 @@ class CampoDetailView(DetailView):
 class CampiSituationView(GroupRequiredMixin, ListView):
     group_required = ["Dirigente"]
     model = Campo
-    template_name = "gestione/situationc.html"
+    template_name = "gestione/lista_campi.html"
 
     def get_queryset(self):
         return Campo.objects.filter(utente_id=self.request.user)
