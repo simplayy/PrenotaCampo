@@ -74,17 +74,19 @@ class CampoDetailView(DetailView):
         return context
 
 
-class ContactFormView(FormView):
+class SelezionaDataFormView(FormView):
     template_name = 'gestione/create_entry.html'
-    form_class = ContactForm
-    success_url = '/thanks/'
+    form_class = SelezionaDataForm
+    
+    
+    def get_success_url(self):
+                print("sium: " + self.date +self.kwargs['pk_campo'] )
+                return reverse_lazy('inserisciprenotazione', kwargs={'pk_giorno': self.date, 'pk_giorno': +self.kwargs['pk_campo']  })
 
     def form_valid(self, form):
-        # This method is called when valid form data has been POSTed.
-        # It should return an HttpResponse.
-        print(form.cleaned_data["date"].weekday())
-
+        self.date=form.cleaned_data["date"].weekday()
         return super().form_valid(form)
+
 
 class CampiSituationView(GroupRequiredMixin, ListView):
     group_required = ["Dirigente"]

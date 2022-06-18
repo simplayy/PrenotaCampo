@@ -26,8 +26,7 @@
     Disponibilita':
     {% for g in giorno  %}
     <ul class="list-group">
-      <li class="list-group-item"> <h5>{{ g.giorno }} </h5>
-        <a href="{% url 'gestione:listacampi' %}" class="btn btn-outline-success" role="button" aria-pressed="true">Verifica Disponibilita</a>
+      <li class="list-group-item"> <h5>{{ g }} </h5>  
         {% if "Dirigente" in user.groups.all.0.name or user.is_staff %}
         <a href="{% url 'gestione:aggiungiora' g.campo_id g.id %}" class="btn btn-secondary" role="button" aria-pressed="true">Aggiungi Orari</a>
         {% endif %}
@@ -39,33 +38,12 @@
     <br>
     
     {% if "Dirigente" in user.groups.all.0.name or user.is_staff %}
-        <a href="{% url 'gestione:aggiungigiorno' object.pk %}" class="btn btn-secondary" role="button" aria-pressed="true">Aggiungi Giorno</a>
-        {% endif %}
-    
+      <a href="{% url 'gestione:aggiungigiorno' object.pk %}" class="btn btn-secondary" role="button" aria-pressed="true">Aggiungi Giorno</a>
+      {% endif %}
+      <a href="{% url 'gestione:selezionadata' object.pk %}" class="btn btn-outline-success" role="button" aria-pressed="true">Verifica Disponibilita</a>
+  
   </div>
 </div>
-{% comment %} <form>
-  <div class="form-group">
-    <label for="exampleInputEmail1">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-  </div>
-  <div class="form-group">
-    <label for="exampleInputPassword1">Giorno</label>
-    <input type="date" class="form-control" id="exampleInputPassword1">
-  </div>
-  <div class="form-group">
-    <label for="exampleFormControlSelect2">Ora (60min)</label>
-    <select multiple class="form-control" id="exampleFormControlSelect2">
-      {% for i in '..............'|make_list %}
-      <option> {{ forloop.counter1  }}</option>
-      {%endfor%}
-    </select>
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form> {% endcomment %}
-
-
 
 
 <br>

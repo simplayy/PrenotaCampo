@@ -16,16 +16,16 @@ class Campo(models.Model):
         return  self.indirizzo + " a "+ str(self.giocatori)
     
 class Giorno(models.Model):
-    giorno = models.CharField(
+    giorno = models.SmallIntegerField(
         choices=(
-            ("Lunedi", "Lunedi"),
-            ("Martedi", "Martedi"),
-            ("Mercoledi", "Mercoledi"),
-            ("Giovedi", "Giovedi"),
-            ("Venerdi", "Venerdi"),
-            ("Sabato", "Sabato"),
-            ("Domenica", "Domenica")
-        ) ,  max_length=100,
+            (0, "Lunedi"),
+            (1, "Martedi"),
+            (2, "Mercoledi"),
+            (3, "Giovedi"),
+            (4, "Venerdi"),
+            (5, "Sabato"),
+            (6, "Domenica")
+        ) 
     )
     campo = models.ForeignKey(Campo, on_delete=models.CASCADE, default=None, blank=True, null=True)
 
@@ -34,7 +34,17 @@ class Giorno(models.Model):
 
 
     def __str__(self):
-        return self.giorno
+        giorni ={
+
+            0: "Lunedi",
+            1: "Martedi",
+            2: "Mercoledi",
+            3: "Giovedi",
+            4: "Venerdi",
+            6: "Domenica"
+
+            }
+        return giorni.get(self.giorno, "invalido")
 
 
 

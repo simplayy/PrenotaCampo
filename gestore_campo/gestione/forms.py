@@ -61,7 +61,7 @@ class CreateOraForm(forms.ModelForm):
 
 
 
-class ContactForm(forms.Form):
+class SelezionaDataForm(forms.Form):
     helper = FormHelper()
     helper.form_id = "verificadata_crispy_form"
     helper.form_method = "POST"
