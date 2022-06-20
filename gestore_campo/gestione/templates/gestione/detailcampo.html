@@ -23,17 +23,39 @@
     </p>
     
     <br>
-    Disponibilita':
-    {% for g in giorno  %}
+    
+    {%for g in campo.giorno_set.all  %}
+    
+    {%for o in g.ora_set.all  %}
+    
+    {%endfor%}
     <ul class="list-group">
+      
       <li class="list-group-item"> <h5>{{ g }} </h5>  
+        <div class="container my-4">
+          
+          <p class="font-weight-bold">Orari: </p>
+          <ul>
+            {%for o in g.ora_set.all  %}
+            <li>{{ o }}</li>
+            {%endfor%}
+            
+          </ul>
+        
+        </div>
         {% if "Dirigente" in user.groups.all.0.name or user.is_staff %}
+        <hr class="my-5">
         <a href="{% url 'gestione:aggiungiora' g.campo_id g.id %}" class="btn btn-secondary" role="button" aria-pressed="true">Aggiungi Orari</a>
+        
         {% endif %}
+        
+       
       </li>
       
 
     </ul>
+    <br>
+    <br>
    {%endfor%}
     <br>
     

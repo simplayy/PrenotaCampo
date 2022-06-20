@@ -68,10 +68,7 @@ class CampoDetailView(DetailView):
     model = Campo
     template_name = "gestione/detailcampo.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['giorno'] = Giorno.objects.filter(campo_id=self.kwargs['pk'])
-        return context
+        
 
 
 class SelezionaDataFormView(FormView):
@@ -80,13 +77,38 @@ class SelezionaDataFormView(FormView):
     
     
     def get_success_url(self):
-                print("sium: " + self.date +self.kwargs['pk_campo'] )
-                return reverse_lazy('inserisciprenotazione', kwargs={'pk_giorno': self.date, 'pk_giorno': +self.kwargs['pk_campo']  })
+        return reverse_lazy('gestione:aggiungiprenotazione', kwargs={'giornop': self.giorno, 'datap': self.date, 'pk_campop': self.kwargs['pk_campo']  })
 
     def form_valid(self, form):
-        self.date=form.cleaned_data["date"].weekday()
+        self.giorno=form.cleaned_data["date"].weekday()
+        self.date=form.cleaned_data["date"]
         return super().form_valid(form)
 
+class CreatePrenotazioneView(CreateView):
+    title = "Aggiungi Prenotazione"
+    form_class =  CreatePrenotazioneForm
+    template_name = "gestione/create_entry.html"
+    success_url = reverse_lazy("gestione:home")
+    def get_form_kwargs(self):
+        kwargs = super( CreatePrenotazioneView, self).get_form_kwargs()
+        kwargs['datap'] = self.kwargs['datap']
+        kwargs['giornop'] = self.kwargs['giornop']
+        kwargs['pk_campop'] = self.kwargs['pk_campop']
+        
+        return kwargs
+
+class CreatePreView(CreateView):
+    title = "Aggiungi un sdora "
+    form_class = CreatedioForm
+    template_name = "gestione/create_entry.html"
+    success_url = reverse_lazy("gestione/?operation=ok")
+    
+    def get_form_kwargs(self):
+        kwargs = super(CreatePreView, self).get_form_kwargs()
+        kwargs['datat'] = self.kwargs['datat']
+        kwargs['giornot'] = self.kwargs['giornot']
+        kwargs['pk_campot'] = self.kwargs['pk_campot']
+        return kwargs
 
 class CampiSituationView(GroupRequiredMixin, ListView):
     group_required = ["Dirigente"]

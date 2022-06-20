@@ -58,11 +58,13 @@ class Ora(models.Model):
         unique_together = ('giorno', 'ora')
         
     def __str__(self):
-        return str(self.ora) +"h"
+        return str(self.ora) +":00 - " + str(self.ora + 1)  + ":00 "
 
 class Prenotazione(models.Model):
     data = models.DateField()
     ora = models.ForeignKey(Ora, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    class Meta:
+        unique_together = ('data', 'ora')
 
 
 
