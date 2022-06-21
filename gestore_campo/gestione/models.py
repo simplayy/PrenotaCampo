@@ -63,6 +63,7 @@ class Ora(models.Model):
 class Prenotazione(models.Model):
     data = models.DateField()
     ora = models.ForeignKey(Ora, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    utente = models.ForeignKey(User, on_delete=models.PROTECT,blank=True,null=True,default=None,related_name="utente")
     class Meta:
         unique_together = ('data', 'ora')
 

@@ -6,6 +6,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView
+from django.contrib.auth.mixins import LoginRequiredMixin
 import datetime
 # Create your views here.
 
@@ -119,4 +120,35 @@ class CampiSituationView(GroupRequiredMixin, ListView):
         return Campo.objects.filter(utente_id=self.request.user)
 
 
-    
+class PrenotazioniView(ListView):
+    context_object_name = 'prenotazione'
+    model = Prenotazione
+    template_name = "gestione/situation.html"
+
+class EliminaPrenotazioneView(LoginRequiredMixin, DetailView):
+    model = Prenotazione
+    template_name = "gestione/cancellazione.html"
+    errore = "NO_ERRORS"
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        p = ctx["object"]
+        print(p)
+        # if c.data_prestito != None:
+
+        #     if c.utente.pk != self.request.user.pk:
+        #         self.errore = "Non puoi restituire un libro non tuo!"
+
+        # else:
+        #     self.errore = "Libro attualmente non in prestito"
+
+        # if self.errore == "NO_ERRORS":
+        #     try:
+        #         c.data_prestito = None
+        #         c.utente = None
+        #         c.save()
+        #     except Exception as e:
+        #         print("Errore! " + str(e))
+        #         self.errore = "Errore nell'operazione di restituzione"
+
+        return ctx

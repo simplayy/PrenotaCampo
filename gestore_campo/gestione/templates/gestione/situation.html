@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+
+{% block title %} Home di {{user.username}} {% endblock %} 
+
+{% block header1 %}
+  <h1>Home di {{user.username}} </h1>
+  <p>Welcome 
+    {% if user.is_authenticated %}
+     {{ user.username }}
+    {% else %}
+    Utente non registrato
+    {% endif %}
+  </p> 
+{% endblock %}
+
+{% block content %} 
+
+<h2>Risulta che hai correntemente {{ prenotazione.count }} prenotazioni  </h2>
+
+<p> Ulteriori dettagli </p>
+
+<br>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">data</th>
+      <th scope="col">ora</th>
+      <th scope="col">campo</th>
+      <th scope="col">azione</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for p in prenotazione %}
+<br>
+
+  
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{p.data}}</td>
+      <td>{{p.ora}}</td>
+      <td>{{p.ora.giorno.campo}}</td>
+      <td><a href="{% url 'gestione:eliminaprenotazione' p.id %}" class="btn btn-danger" role="button" aria-pressed="true">Cancella</a></td>
+    </tr>
+  
+{%endfor%}
+</tbody>
+
+</table>
+<br>
+
+<br>
+
+{% endblock %}
