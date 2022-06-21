@@ -7,6 +7,8 @@ from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from datetime import date
+
 import datetime
 # Create your views here.
 
@@ -95,21 +97,9 @@ class CreatePrenotazioneView(CreateView):
         kwargs['datap'] = self.kwargs['datap']
         kwargs['giornop'] = self.kwargs['giornop']
         kwargs['pk_campop'] = self.kwargs['pk_campop']
-        
+        kwargs['user'] = self.request.user
         return kwargs
 
-class CreatePreView(CreateView):
-    title = "Aggiungi un sdora "
-    form_class = CreatedioForm
-    template_name = "gestione/create_entry.html"
-    success_url = reverse_lazy("gestione/?operation=ok")
-    
-    def get_form_kwargs(self):
-        kwargs = super(CreatePreView, self).get_form_kwargs()
-        kwargs['datat'] = self.kwargs['datat']
-        kwargs['giornot'] = self.kwargs['giornot']
-        kwargs['pk_campot'] = self.kwargs['pk_campot']
-        return kwargs
 
 class CampiSituationView(GroupRequiredMixin, ListView):
     group_required = ["Dirigente"]
@@ -119,36 +109,62 @@ class CampiSituationView(GroupRequiredMixin, ListView):
     def get_queryset(self):
         return Campo.objects.filter(utente_id=self.request.user)
 
+    
+class PrenotazioniDirigenteView(ListView):
+    context_object_name = 'prenotazione'
+    model = Prenotazione
+    template_name = "gestione/situation.html"
+
+    def get_queryset(self):
+        print("aooooooooooooooooooo"+str(Prenotazione.objects.filter()[0].ora[0].giorno))
+        return Prenotazione.objects.filter(utente_id=Prenotazione.ora.giorno.campo.user)
+            
+    def get_context_data(self, **kwargs):
+        context = super(PrenotazioniView, self).get_context_data(**kwargs)
+        return context
 
 class PrenotazioniView(ListView):
     context_object_name = 'prenotazione'
     model = Prenotazione
     template_name = "gestione/situation.html"
 
+    def get_queryset(self):
+            return Prenotazione.objects.filter(utente_id=self.request.user)
+            
+    def get_context_data(self, **kwargs):
+        context = super(PrenotazioniView, self).get_context_data(**kwargs)
+        context['oggi'] = date.today()
+        return context
+
 class EliminaPrenotazioneView(LoginRequiredMixin, DetailView):
     model = Prenotazione
     template_name = "gestione/cancellazione.html"
     errore = "NO_ERRORS"
-
+    
+        
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         p = ctx["object"]
-        print(p)
-        # if c.data_prestito != None:
+        print(p.utente_id)
+        if p != None:
 
-        #     if c.utente.pk != self.request.user.pk:
-        #         self.errore = "Non puoi restituire un libro non tuo!"
+            if p.data == date.today():
+                self.errore = "RETARD"
 
-        # else:
-        #     self.errore = "Libro attualmente non in prestito"
+            if p.utente_id != self.request.user.pk:
+                self.errore = "Prenotazione non tua!"
 
-        # if self.errore == "NO_ERRORS":
-        #     try:
-        #         c.data_prestito = None
-        #         c.utente = None
-        #         c.save()
-        #     except Exception as e:
-        #         print("Errore! " + str(e))
-        #         self.errore = "Errore nell'operazione di restituzione"
+        else:
+            self.errore = "Non esiste una prenotazione"
 
+        if self.errore == "NO_ERRORS" or  self.errore == "RETARD":
+            try:
+                Prenotazione.objects.filter(id=p.id).delete()
+                pass
+
+            except Exception as e:
+                print("Errore! " + str(e))
+                self.errore = "Errore nell'operazione di restituzione"
+
+        print(self.errore)
         return ctx

@@ -70,23 +70,7 @@ class SelezionaDataForm(forms.Form):
     helper.add_input(Submit("submit","Vedi Orari"))
     date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
 
-class CreatedioForm(forms.ModelForm):
-    helper = FormHelper()
-    helper.form_id = "adddio_crispy_form"
-    helper.form_method = "POST"
-    helper.add_input(Submit("submit","Aggiungi dio"))
 
-    class Meta:
-        model = Prenotazione
-        fields = ["data", "ora"] 
-
-    def __init__(self, *args, **kwargs):
-
-        data = kwargs.pop('datat')
-        giorno = kwargs.pop('giornot')
-        pk_campo = kwargs.pop('pk_campot')
-        
-        super(CreatedioForm, self).__init__(*args, **kwargs)
 class CreatePrenotazioneForm(forms.ModelForm):
     helper = FormHelper()
     helper.form_id = "addpren_crispy_form"
@@ -102,6 +86,7 @@ class CreatePrenotazioneForm(forms.ModelForm):
         data = kwargs.pop('datap')
         giorno = kwargs.pop('giornop')
         pk_campo = kwargs.pop('pk_campop')
+        user = kwargs.pop('user')
         pk_giorno=Giorno.objects.filter(campo_id=pk_campo, giorno=giorno).values_list('pk', flat=True)[0]
         print(pk_giorno)
         
@@ -109,3 +94,6 @@ class CreatePrenotazioneForm(forms.ModelForm):
         self.fields['ora']=forms.ModelChoiceField(queryset=Ora.objects.filter(giorno_id=pk_giorno))
         self.fields['data'].initial=data
         self.fields['data'].disabled = True
+        self.instance.utente=user
+        
+        

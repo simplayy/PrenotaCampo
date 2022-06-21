@@ -6,17 +6,20 @@
 {% block title %} Restituzione di {{object.libro.titolo}} {% endblock %} 
 
 {% block header1 %}
-  <h1>Copia con id {{object.pk}}</h1>
+  <h1>Prenotazione con id {{object.pk}}</h1>
 {% endblock %}
 
 {% block content %} 
 
 {% if "NO_ERRORS" == view.errore %}
 <div class="alert alert-success" role="alert">
-  La restituzione è andata a buon fine: la copia con id {{ copia.pk }} è di nuovo in biblioteca
+  Prenotazione con id {{ object.pk }} è stata cancellata correttamente
+{% elif "RETARD" == view.errore %}
+<div class="alert alert-warning" role="alert">
+Cancellazione avvenuta con successo, ma verra trattenuta una caparra dal valore di  :  {{ object.ora.giorno.campo.caparra  }} $
 {% else %}
 <div class="alert alert-danger" role="alert">
-  Restituzione fallita: {{ view.errore }}
+  Cancellazione non eseguita, per il motivo:  {{ view.errore }}
 {% endif %}
 </div>
 

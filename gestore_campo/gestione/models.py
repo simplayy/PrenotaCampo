@@ -14,6 +14,11 @@ class Campo(models.Model):
 
     def __str__(self):
         return  self.indirizzo + " a "+ str(self.giocatori)
+
+    @property
+    def caparra(self):
+        return int(self.prezzo * self.giocatori * 2 * 0.20)
+
     
 class Giorno(models.Model):
     giorno = models.SmallIntegerField(

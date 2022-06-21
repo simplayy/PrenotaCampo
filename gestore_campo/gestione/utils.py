@@ -1,4 +1,5 @@
 from math import sin, cos, radians, acos
+import json
 
 # http://en.wikipedia.org/wiki/Earth_radius
 # """For Earth, the mean radius is 6,371.009 km (˜3,958.761 mi; ˜3,440.069 nmi)"""
@@ -14,3 +15,12 @@ def calc_dist_fixed(lat_a, long_a, lat_b, long_b):
         cos(lat_a) * cos(lat_b) * cos(delta_long)
         )
     return acos(cos_x) * EARTH_RADIUS_IN_MILES
+
+def cap_to_coords(cap):
+    # Opening JSON file
+    f = open('geo/italy_cap.json')
+    
+    # returns JSON object as 
+    # a dictionary
+    data = json.load(f)
+    pass

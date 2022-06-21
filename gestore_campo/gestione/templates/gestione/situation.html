@@ -41,9 +41,36 @@
       <td>{{p.data}}</td>
       <td>{{p.ora}}</td>
       <td>{{p.ora.giorno.campo}}</td>
-      <td><a href="{% url 'gestione:eliminaprenotazione' p.id %}" class="btn btn-danger" role="button" aria-pressed="true">Cancella</a></td>
+      <td>
+        {% if p.data > oggi %}
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+        Cancella
+        </button>
+        {% endif %}
     </tr>
-  
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Conferma Cancellazione</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            conferma la cancellazione della prenotazione, ricorda questa non e' un opzione reversibile, e se stai cancellando la prenotazione nella stessa giornata dovrai pagare la penale pari al 20%
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <a href="{% url 'gestione:eliminaprenotazione' p.id %}" class="btn btn-danger" role="button" aria-pressed="true">Cancella</a></td>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
 {%endfor%}
 </tbody>
 
