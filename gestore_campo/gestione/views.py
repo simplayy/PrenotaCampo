@@ -116,11 +116,10 @@ class PrenotazioniDirigenteView(ListView):
     template_name = "gestione/situation.html"
 
     def get_queryset(self):
-        print("aooooooooooooooooooo"+str(Prenotazione.objects.filter()[0].ora[0].giorno))
-        return Prenotazione.objects.filter(utente_id=Prenotazione.ora.giorno.campo.user)
+        return Prenotazione.objects.filter(ora__giorno__campo__utente=self.request.user)
             
     def get_context_data(self, **kwargs):
-        context = super(PrenotazioniView, self).get_context_data(**kwargs)
+        context = super(PrenotazioniDirigenteView, self).get_context_data(**kwargs)
         return context
 
 class PrenotazioniView(ListView):

@@ -2,8 +2,7 @@ from msilib.schema import Class
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
-
-
+from .utils import cap_to_lat, cap_to_lng
 # Create your models here.
 class Campo(models.Model):
     indirizzo = models.CharField(max_length=200)
@@ -11,6 +10,7 @@ class Campo(models.Model):
     mq = models.IntegerField(default=90)
     giocatori = models.IntegerField(default=11)
     utente = models.ForeignKey(User, on_delete=models.PROTECT,blank=True,null=True,default=None,related_name="campi_posseduti")
+    cap = models.IntegerField()
 
     def __str__(self):
         return  self.indirizzo + " a "+ str(self.giocatori)
@@ -18,6 +18,14 @@ class Campo(models.Model):
     @property
     def caparra(self):
         return int(self.prezzo * self.giocatori * 2 * 0.20)
+
+    @property
+    def lat(self):
+        return cap_to_lat(self.cap)
+
+    @property
+    def lng(self):
+        return cap_to_lng(self.cap)
 
     
 class Giorno(models.Model):

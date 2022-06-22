@@ -1,6 +1,7 @@
 from math import sin, cos, radians, acos
+from django.conf import settings
 import json
-
+import os
 # http://en.wikipedia.org/wiki/Earth_radius
 # """For Earth, the mean radius is 6,371.009 km (˜3,958.761 mi; ˜3,440.069 nmi)"""
 EARTH_RADIUS_IN_MILES = 3958.761
@@ -16,11 +17,70 @@ def calc_dist_fixed(lat_a, long_a, lat_b, long_b):
         )
     return acos(cos_x) * EARTH_RADIUS_IN_MILES
 
-def cap_to_coords(cap):
-    # Opening JSON file
-    f = open('geo/italy_cap.json')
+def find_istat_json(json_object, name):
+        for dict in json_object:
+            if '-' in dict['cap']:
+                l,h = map(int, dict['cap'].split('-'))
+                for r in range(l,h+1):
+                    if str(r) == name:
+                        return dict['istat']
+
+            elif dict['cap'] == name:
+                return dict['istat']
+
+def find_lng_json(json_object, name):
+        for dict in json_object:
+            if dict['istat'] == name:
+                return dict['lng']
+
+def find_lat_json(json_object, name):
+        for dict in json_object:
+            if dict['istat'] == name:
+                return dict['lat']
+
+def cap_to_lat(cap):
+    f = open(os.path.join( settings.BASE_DIR, 'gestione/geo/italy_cap.json' ))
+    jsonData = json.load(f)
+    istat = ""
+    try:
+        istat = find_istat_json(jsonData, str(cap))
+        
+    except KeyError:
+        print("cap doesn't exist")
+    f.close()
     
-    # returns JSON object as 
-    # a dictionary
-    data = json.load(f)
-    pass
+    f = open(os.path.join( settings.BASE_DIR, 'gestione/geo/italy_geo.json' ))
+    jsonData = json.load(f)
+    
+    lat = ""
+    try:
+        lat = find_lat_json(jsonData, istat)
+    except KeyError:
+        print("lat doesn't exist")
+
+  
+    return lat
+
+
+def cap_to_lng(cap):
+    f = open(os.path.join( settings.BASE_DIR, 'gestione/geo/italy_cap.json' ))
+    jsonData = json.load(f)
+    istat = ""
+    try:
+        istat = find_istat_json(jsonData, str(cap))
+        
+    except KeyError:
+        print("cap doesn't exist")
+    f.close()
+    
+    f = open(os.path.join( settings.BASE_DIR, 'gestione/geo/italy_geo.json' ))
+    jsonData = json.load(f)
+    
+    lng = ""
+    try:
+        lng = find_lng_json(jsonData, istat)
+    except KeyError:
+        print("lng doesn't exist")
+
+  
+    return lng
