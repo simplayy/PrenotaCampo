@@ -2,7 +2,7 @@ from msilib.schema import Class
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
-from .utils import cap_to_lat, cap_to_lng
+from .utils import cap_to_lat, cap_to_lng, calc_dist_fixed, cap_to_comune
 # Create your models here.
 class Campo(models.Model):
     indirizzo = models.CharField(max_length=200)
@@ -16,7 +16,7 @@ class Campo(models.Model):
         return  self.indirizzo + " a "+ str(self.giocatori)
 
     @property
-    def caparra(self):
+    def caparra(self, molti):
         return int(self.prezzo * self.giocatori * 2 * 0.20)
 
     @property
@@ -26,6 +26,17 @@ class Campo(models.Model):
     @property
     def lng(self):
         return cap_to_lng(self.cap)
+
+    @property
+    def comune(self):
+        return cap_to_comune(self.cap)
+
+    def confronta_distanza(self, cap):
+        return calc_dist_fixed(self.lat, self.lng, cap_to_lat(cap), cap_to_lng(cap))
+
+    class Meta:
+       ordering = ['prezzo']
+
 
     
 class Giorno(models.Model):

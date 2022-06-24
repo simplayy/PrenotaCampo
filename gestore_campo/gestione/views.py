@@ -2,7 +2,7 @@ from .models import *
 from .forms import *
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView
@@ -167,3 +167,33 @@ class EliminaPrenotazioneView(LoginRequiredMixin, DetailView):
 
         print(self.errore)
         return ctx
+
+def search(request):
+
+    if request.method == "POST":
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            sstring = form.cleaned_data.get("caratteristiche")
+            cap = form.cleaned_data.get("cap")
+            if(cap == ""): cap = "None"
+            return redirect("gestione:ricerca_risultati", sstring, cap)
+    else:
+        form = SearchForm()
+
+    return render(request,template_name="gestione/ricerca.html",context={"form":form})
+
+class CampoRicercaView(CampoListView):
+    titolo = "La tua ricerca ha dato come risultato"
+
+    def get_queryset(self):
+        sstring = self.request.resolver_match.kwargs["sstring"] 
+        cap = self.request.resolver_match.kwargs["cap"]
+
+        
+      
+        qq = self.model.objects.filter(indirizzo__icontains=sstring) | self.model.objects.filter(giocatori__icontains=sstring)
+        if (cap != "None"): qq = sorted(qq, key=lambda campi: campi.confronta_distanza(cap) )
+
+
+
+        return qq

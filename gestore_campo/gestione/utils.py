@@ -27,21 +27,30 @@ def find_istat_json(json_object, name):
 
             elif dict['cap'] == name:
                 return dict['istat']
+        return "0"
 
 def find_lng_json(json_object, name):
         for dict in json_object:
             if dict['istat'] == name:
                 return dict['lng']
+        return "0"
 
 def find_lat_json(json_object, name):
         for dict in json_object:
             if dict['istat'] == name:
                 return dict['lat']
+        return "0"
+
+def find_comune_json(json_object, name):
+        for dict in json_object:
+            if dict['istat'] == name:
+                return dict['comune']
+        return "0"
 
 def cap_to_lat(cap):
     f = open(os.path.join( settings.BASE_DIR, 'gestione/geo/italy_cap.json' ))
     jsonData = json.load(f)
-    istat = ""
+    istat = "0"
     try:
         istat = find_istat_json(jsonData, str(cap))
         
@@ -52,20 +61,20 @@ def cap_to_lat(cap):
     f = open(os.path.join( settings.BASE_DIR, 'gestione/geo/italy_geo.json' ))
     jsonData = json.load(f)
     
-    lat = ""
+    lat = "0"
     try:
         lat = find_lat_json(jsonData, istat)
     except KeyError:
         print("lat doesn't exist")
 
-  
-    return lat
+    print(lat)
+    return float(lat)
 
 
 def cap_to_lng(cap):
     f = open(os.path.join( settings.BASE_DIR, 'gestione/geo/italy_cap.json' ))
     jsonData = json.load(f)
-    istat = ""
+    istat = "0"
     try:
         istat = find_istat_json(jsonData, str(cap))
         
@@ -76,11 +85,35 @@ def cap_to_lng(cap):
     f = open(os.path.join( settings.BASE_DIR, 'gestione/geo/italy_geo.json' ))
     jsonData = json.load(f)
     
-    lng = ""
+    lng = "0"
     try:
         lng = find_lng_json(jsonData, istat)
     except KeyError:
         print("lng doesn't exist")
 
   
-    return lng
+    return float(lng)
+
+
+def cap_to_comune(cap):
+    f = open(os.path.join( settings.BASE_DIR, 'gestione/geo/italy_cap.json' ))
+    jsonData = json.load(f)
+    istat = "0"
+    try:
+        istat = find_istat_json(jsonData, str(cap))
+        
+    except KeyError:
+        print("cap doesn't exist")
+    f.close()
+    
+    f = open(os.path.join( settings.BASE_DIR, 'gestione/geo/italy_geo.json' ))
+    jsonData = json.load(f)
+    
+    comune = ""
+    try:
+        comune = find_comune_json(jsonData, istat)
+    except KeyError:
+        print("comune doesn't exist")
+
+    
+    return comune

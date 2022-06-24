@@ -97,3 +97,11 @@ class CreatePrenotazioneForm(forms.ModelForm):
         self.instance.utente=user
         
         
+class SearchForm(forms.Form):
+
+    helper = FormHelper()
+    helper.form_id = "search_crispy_form"
+    helper.form_method = "POST"
+    helper.add_input(Submit("submit","Cerca"))
+    caratteristiche = forms.CharField(label="Cerca qualcosa",  max_length=400, required=True)
+    cap = forms.CharField(label="CAP",  max_length=400, required=False)

@@ -17,5 +17,7 @@ urlpatterns = [
     path("eliminaprenotazione/<pk>/",views.EliminaPrenotazioneView.as_view(),name="eliminaprenotazione"),
     path("situationc/",views.CampiSituationView.as_view(),name="situationc"),
     path("situation/",views.PrenotazioniView.as_view(),name="situation"),
-    path("situationdirigente/",views.PrenotazioniDirigenteView.as_view(),name="situationdirigente")
+    path("situationdirigente/",views.PrenotazioniDirigenteView.as_view(),name="situationdirigente"),
+    path("ricerca/", views.search, name="cercalibro"),
+    path("ricerca/<str:sstring>/<str:cap>/", views.CampoRicercaView.as_view(), name="ricerca_risultati"),
 ]
