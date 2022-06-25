@@ -15,9 +15,10 @@ urlpatterns = [
     path("selezionadata/<pk_campo>/",views.SelezionaDataFormView.as_view(),name="selezionadata"),
     path("aggiungiprenotazione/<giornop>/<datap>/<pk_campop>/",views.CreatePrenotazioneView.as_view(),name="aggiungiprenotazione"),
     path("eliminaprenotazione/<pk>/",views.EliminaPrenotazioneView.as_view(),name="eliminaprenotazione"),
+    path("esitoprenotazione/<pk>/",views.EsitoPrenotazioneView.as_view(),name="esitoprenotazione"),
     path("situationc/",views.CampiSituationView.as_view(),name="situationc"),
     path("situation/",views.PrenotazioniView.as_view(),name="situation"),
     path("situationdirigente/",views.PrenotazioniDirigenteView.as_view(),name="situationdirigente"),
-    path("ricerca/", views.search, name="cercalibro"),
+    path("ricerca/", views.search, name="cercacampo"),
     path("ricerca/<str:sstring>/<str:cap>/", views.CampoRicercaView.as_view(), name="ricerca_risultati"),
 ]

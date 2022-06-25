@@ -3,6 +3,9 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django.contrib.auth.models import User
 from .models import *
+from django.shortcuts import redirect
+import datetime
+
 
 class CreateCampoForm(forms.ModelForm):
     helper = FormHelper()
@@ -69,7 +72,11 @@ class SelezionaDataForm(forms.Form):
     helper.form_method = "POST"
     helper.add_input(Submit("submit","Vedi Orari"))
     date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-
+    def clean_date(self):
+        date = self.cleaned_data['date']
+        if date < datetime.date.today():
+            raise forms.ValidationError("Non puoi selezionare una data nel passato!")
+        return date
 
 class CreatePrenotazioneForm(forms.ModelForm):
     helper = FormHelper()
@@ -87,14 +94,18 @@ class CreatePrenotazioneForm(forms.ModelForm):
         giorno = kwargs.pop('giornop')
         pk_campo = kwargs.pop('pk_campop')
         user = kwargs.pop('user')
-        pk_giorno=Giorno.objects.filter(campo_id=pk_campo, giorno=giorno).values_list('pk', flat=True)[0]
-        print(pk_giorno)
+        try:
+            pk_giorno=Giorno.objects.filter(campo_id=pk_campo, giorno=giorno).values_list('pk', flat=True)[0]
+        except:
+            pk_giorno=None
         
         super(CreatePrenotazioneForm, self).__init__(*args, **kwargs)
         self.fields['ora']=forms.ModelChoiceField(queryset=Ora.objects.filter(giorno_id=pk_giorno))
         self.fields['data'].initial=data
         self.fields['data'].disabled = True
         self.instance.utente=user
+
+    
         
         
 class SearchForm(forms.Form):

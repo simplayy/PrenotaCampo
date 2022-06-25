@@ -13,6 +13,9 @@
     background: #aaa;
   }
   </style>
+  {% load static %}
+  <link rel="shortcut icon" type="image/png" href="{% static 'favicon/logo.ico' %}"/>
+
   {% endblock %}
   {% load crispy_forms_tags %} 
 
@@ -34,6 +37,7 @@
 
 <div id="info" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
+    
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Welcome {{user.username}} </h5>
@@ -61,28 +65,42 @@
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
     {% block navbar %}
-    <a class="navbar-brand" href="{% url 'gestione:home' %}">Prenota Campo</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="collapsibleNavbar">
-      <ul class="navbar-nav">
+    <a class="navbar-brand" href="/gestione"> 
+      <img src={% static 'img/logo.jpg' %} width="30" height="30" class="d-inline-block align-top" alt="">
+      Prenota Campi
+    </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href={% url 'gestione:listacampi' %}>Lista Campi </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"  href={% url 'gestione:cercacampo' %}>Cerca Campo</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"  href={% url 'gestione:situation' %}>Gestisci Prenotazioni</a>
+          </li>
+          {% if "Dirigente" in user.groups.all.0.name or user.is_staff %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Gestione Dirigente
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href={% url 'gestione:aggiungicampo' %}>Aggiungi Campo</a>
+              <a class="dropdown-item" href={% url 'gestione:situationc' %}>Situazione Campi Gestiti</a>
+              <a class="dropdown-item" href={% url 'gestione:situationdirigente' %}>Situazione Prenotazioni Campi Gestiti</a>
+              
+            </div>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    
+    
 
-
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'gestione:home' %}">Gestione</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'gestione:listacampi' %}">Lista Campi</a>
-        </li>
-        
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'gestione:home' %}">Cerca un Campo</a>
-        </li>
-
-      </ul>
-    </div> 
     {% endblock %} 
   </nav>
 

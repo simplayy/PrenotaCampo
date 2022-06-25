@@ -16,8 +16,16 @@ class Campo(models.Model):
         return  self.indirizzo + " a "+ str(self.giocatori)
 
     @property
-    def caparra(self, molti):
+    def caparra(self):
         return int(self.prezzo * self.giocatori * 2 * 0.20)
+
+    @property
+    def totale(self):
+        return int(self.prezzo * self.giocatori * 2 )
+
+    @property
+    def totale_scontato(self):
+        return int(self.prezzo * self.giocatori * 2 * 0.85)
 
     @property
     def lat(self):

@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path, re_path, include
 from django.contrib.auth import views as auth_views
 from .views import *
+from django.views.generic.base import RedirectView
+from django.contrib.staticfiles.storage import staticfiles_storage
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,5 +30,7 @@ urlpatterns = [
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
 
     path("registerd/",DirigenteCreateView.as_view(), name="registerd"),
+    path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('favicon/logo.ico')))
+
 
 ]

@@ -16,7 +16,7 @@
   Prenotazione con id {{ object.pk }} è stata cancellata correttamente
 {% elif "RETARD" == view.errore %}
 <div class="alert alert-warning" role="alert">
-Cancellazione avvenuta con successo, ma verra trattenuta una caparra dal valore di  :  {{ object.ora.giorno.campo.caparra  }} $
+Cancellazione avvenuta con successo, ma verra trattenuta una caparra dal valore di  :  {{ object.ora.giorno.campo.caparra  }} €
 {% else %}
 <div class="alert alert-danger" role="alert">
   Cancellazione non eseguita, per il motivo:  {{ view.errore }}

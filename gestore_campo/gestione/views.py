@@ -91,7 +91,6 @@ class CreatePrenotazioneView(CreateView):
     title = "Aggiungi Prenotazione"
     form_class =  CreatePrenotazioneForm
     template_name = "gestione/create_entry.html"
-    success_url = reverse_lazy("gestione:home")
     def get_form_kwargs(self):
         kwargs = super( CreatePrenotazioneView, self).get_form_kwargs()
         kwargs['datap'] = self.kwargs['datap']
@@ -99,6 +98,8 @@ class CreatePrenotazioneView(CreateView):
         kwargs['pk_campop'] = self.kwargs['pk_campop']
         kwargs['user'] = self.request.user
         return kwargs
+    def get_success_url(self, **kwargs):
+        return reverse_lazy("gestione:esitoprenotazione", kwargs={'pk': self.object.pk})
 
 
 class CampiSituationView(GroupRequiredMixin, ListView):
@@ -134,6 +135,22 @@ class PrenotazioniView(ListView):
         context = super(PrenotazioniView, self).get_context_data(**kwargs)
         context['oggi'] = date.today()
         return context
+
+class EsitoPrenotazioneView(LoginRequiredMixin, DetailView):
+    model = Prenotazione
+    template_name = "gestione/esito_prenotazione.html"
+    sconto = "NO"
+    
+        
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        p = ctx["object"]
+        print(p.utente_id)
+        p=len(Prenotazione.objects.filter(utente_id=p.utente_id))
+        print(p)
+        if(p%3 == 0): 
+            self.sconto="SI" 
+        return ctx
 
 class EliminaPrenotazioneView(LoginRequiredMixin, DetailView):
     model = Prenotazione
