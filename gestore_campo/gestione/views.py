@@ -53,18 +53,22 @@ class CreateGiornoView(CreateView):
         kwargs['user'] = self.request.user
         kwargs['pk_campo'] = self.kwargs['pk_campo']
         return kwargs
+    def get_success_url(self, **kwargs):
+        return reverse_lazy("gestione:detailcampo", kwargs={'pk': self.kwargs['pk_campo']})
 
 class CreateOraView(CreateView):
     title = "Aggiungi un ora "
     form_class = CreateOraForm
     template_name = "gestione/create_entry.html"
-    success_url = reverse_lazy("gestione/?operation=ok")
 
     def get_form_kwargs(self):
         kwargs = super(CreateOraView, self).get_form_kwargs()
         kwargs['pk_campo'] = self.kwargs['pk_campo']
         kwargs['pk_giorno'] = self.kwargs['pk_giorno']
         return kwargs
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy("gestione:detailcampo", kwargs={'pk': self.kwargs['pk_campo']})
 
 
 class CampoDetailView(DetailView):
