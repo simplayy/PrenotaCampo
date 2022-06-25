@@ -34,12 +34,14 @@ class CreateCampoView(CreateView):
     title = "Aggiungi un campo"
     form_class = CreateCampoForm
     template_name = "gestione/create_entry.html"
-    success_url = reverse_lazy("gestione:aggiungigiorno")
 
     def get_form_kwargs(self):
         kwargs = super(CreateCampoView, self).get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy("gestione:detailcampo", kwargs={'pk': self.object.pk})
 
 class CreateGiornoView(CreateView):
     title = "Aggiungi un giorno"
@@ -181,6 +183,56 @@ class EliminaPrenotazioneView(LoginRequiredMixin, DetailView):
             except Exception as e:
                 print("Errore! " + str(e))
                 self.errore = "Errore nell'operazione di restituzione"
+
+        print(self.errore)
+        return ctx
+
+class EliminaGiornoView(GroupRequiredMixin, DetailView):
+    group_required = ["Dirigente"]
+    model = Giorno
+    template_name = "gestione/cancellazione_giorno.html"
+    errore = "NO_ERRORS"
+    
+        
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        g = ctx["object"]
+        if g == None:
+            self.errore = "Non esiste Il giorno selezioanto"
+
+        if self.errore == "NO_ERRORS":
+            try:
+                Giorno.objects.filter(id=g.id).delete()
+                pass
+
+            except Exception as e:
+                print("Errore! " + str(e))
+                self.errore = "Errore nell'operazione di cancellazioen giorno"
+
+        print(self.errore)
+        return ctx
+
+class EliminaCampoView(GroupRequiredMixin, DetailView):
+    group_required = ["Dirigente"]
+    model = Campo
+    template_name = "gestione/cancellazione_campo.html"
+    errore = "NO_ERRORS"
+    
+        
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        c = ctx["object"]
+        if c == None:
+            self.errore = "Non esiste Il campo selezioanto"
+
+        if self.errore == "NO_ERRORS":
+            try:
+                Campo.objects.filter(id=c.id).delete()
+                pass
+
+            except Exception as e:
+                print("Errore! " + str(e))
+                self.errore = "Errore nell'operazione di cancellazioen giorno"
 
         print(self.errore)
         return ctx

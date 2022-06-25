@@ -44,6 +44,7 @@
         {% if "Dirigente" in user.groups.all.0.name or user.is_staff %}
         <hr class="my-5">
         <a href="{% url 'gestione:aggiungiora' g.campo_id g.id %}" class="btn btn-secondary" role="button" aria-pressed="true">Aggiungi Orari</a>
+        <a href="{% url 'gestione:eliminagiorno' g.id %}" class="btn btn-danger" role="button" aria-pressed="true">Elimina Giorno </a>
         
         {% endif %}
         
@@ -59,9 +60,10 @@
     
     {% if "Dirigente" in user.groups.all.0.name or user.is_staff %}
       <a href="{% url 'gestione:aggiungigiorno' object.pk %}" class="btn btn-secondary" role="button" aria-pressed="true">Aggiungi Giorno</a>
+      <a href="{% url 'gestione:eliminacampo' object.pk %}" class="btn btn-danger" role="button" aria-pressed="true">Elimina Campo</a>
       {% endif %}
       <a href="{% url 'gestione:selezionadata' object.pk %}" class="btn btn-outline-success" role="button" aria-pressed="true">Verifica Disponibilita</a>
-  
+    
   </div>
 </div>
 
