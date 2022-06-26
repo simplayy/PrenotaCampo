@@ -64,7 +64,36 @@ class CreateOraForm(forms.ModelForm):
         self.fields['giorno'].disabled = True
         
 
+class CreateRecensioneForm(forms.ModelForm):
+    helper = FormHelper()
+    helper.form_id = "addrecensione_crispy_form"
+    helper.form_method = "POST"
+    helper.add_input(Submit("submit","Aggiungi Recensione"))
+    class Meta:
+        model = Recensione
+        fields = ["utente", "campo", "descrizione", "stelle"]
+        labels  = {
+            'stelle': ('Stelle (1-5)'),
+        }
+       
+    def __init__(self, *args, **kwargs):
+        pk_campo = kwargs.pop('pk_campo')
 
+        utente = kwargs.pop('utente')
+        
+        
+        
+        super(CreateRecensioneForm, self).__init__(*args, **kwargs)
+        self.fields['utente'].initial = utente
+        self.fields['utente'].disabled = True
+
+        self.fields['campo'].initial = pk_campo
+        self.fields['campo'].disabled = True
+
+    def clean_campo(self):
+        if (len(Prenotazione.objects.filter(utente_id=self.cleaned_data['utente']))==0):
+            raise forms.ValidationError("Negro di merda!")
+        return self.cleaned_data['campo']
 
 class SelezionaDataForm(forms.Form):
     helper = FormHelper()

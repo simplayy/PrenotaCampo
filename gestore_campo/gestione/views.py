@@ -70,12 +70,39 @@ class CreateOraView(CreateView):
     def get_success_url(self, **kwargs):
         return reverse_lazy("gestione:detailcampo", kwargs={'pk': self.kwargs['pk_campo']})
 
+class CreateRecensioneView(CreateView):
+    title = "Aggiungi una Recensione"
+    form_class = CreateRecensioneForm
+    template_name = "gestione/create_entry.html"
+
+    def get_form_kwargs(self):
+        kwargs = super(CreateRecensioneView, self).get_form_kwargs()
+        kwargs['utente'] = self.request.user
+        kwargs['pk_campo'] = self.kwargs['pk_campo']
+        return kwargs
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy("gestione:detailcampo", kwargs={'pk': self.kwargs['pk_campo']})
 
 class CampoDetailView(DetailView):
     titolo = "Dettagli campo"
     context_object_name = 'campo'
     model = Campo
     template_name = "gestione/detailcampo.html"
+    sconto = "1"
+    
+        
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        p = ctx["object"]
+        print(p.utente_id)
+        p=len(Prenotazione.objects.filter(utente_id=p.utente_id))
+        print(p)
+        if(p%3 == 0): 
+            self.sconto="3" 
+        if(p%2 == 0): 
+            self.sconto="2" 
+        return ctx
 
         
 

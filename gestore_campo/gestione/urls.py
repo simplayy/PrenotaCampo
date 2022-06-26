@@ -12,6 +12,7 @@ urlpatterns = [
     path("aggiungicampo/",views.CreateCampoView.as_view(),name="aggiungicampo"),
     path("aggiungigiorno/<pk_campo>/",views.CreateGiornoView.as_view(),name="aggiungigiorno"),
     path("aggiungiora/<pk_campo>/<pk_giorno>/",views.CreateOraView.as_view(),name="aggiungiora"),
+    path("aggiungirecensione/<pk_campo>/",views.CreateRecensioneView.as_view(),name="aggiungirecensione"),
     path("selezionadata/<pk_campo>/",views.SelezionaDataFormView.as_view(),name="selezionadata"),
     path("aggiungiprenotazione/<giornop>/<datap>/<pk_campop>/",views.CreatePrenotazioneView.as_view(),name="aggiungiprenotazione"),
     path("eliminaprenotazione/<pk>/",views.EliminaPrenotazioneView.as_view(),name="eliminaprenotazione"),

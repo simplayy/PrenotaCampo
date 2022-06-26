@@ -2,6 +2,8 @@ from msilib.schema import Class
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db.models import Avg
+
 from .utils import cap_to_lat, cap_to_lng, calc_dist_fixed, cap_to_comune
 # Create your models here.
 class Campo(models.Model):
@@ -11,6 +13,15 @@ class Campo(models.Model):
     giocatori = models.IntegerField(default=11)
     utente = models.ForeignKey(User, on_delete=models.PROTECT,blank=True,null=True,default=None,related_name="campi_posseduti")
     cap = models.IntegerField()
+    immagine = models.ImageField(upload_to='campo', blank=True,null=True,default=None)
+    tipo_erba = models.CharField(
+        choices=(
+            ("Sintetico", "Sintetico"),
+            ("Erba Vera", "Erba Vera"),
+            ("Cementato Esterno", "Cementato Esterno"),
+            ("Cementato Interno", "Cementato Interno")
+        ), max_length=100
+    )
 
     def __str__(self):
         return  self.indirizzo + " a "+ str(self.giocatori)
@@ -38,6 +49,11 @@ class Campo(models.Model):
     @property
     def comune(self):
         return cap_to_comune(self.cap)
+
+    @property
+    def rating_avg(self):
+      rate = self.campo_recensito.aggregate(Avg('stelle'))
+      return rate['stelle__avg']
 
     def confronta_distanza(self, cap):
         return calc_dist_fixed(self.lat, self.lng, cap_to_lat(cap), cap_to_lng(cap))
@@ -99,6 +115,12 @@ class Prenotazione(models.Model):
     class Meta:
         unique_together = ('data', 'ora')
 
+class Recensione(models.Model):
+    utente = models.ForeignKey(User, on_delete=models.PROTECT,blank=True,null=True,default=None,related_name="utente_recensore")
+    campo = models.ForeignKey(Campo, on_delete=models.CASCADE, default=None, blank=True, null=True, related_name="campo_recensito")
+    stelle = models.SmallIntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(5)])
+    descrizione = models.CharField(max_length=300)
 
-
+    class Meta:
+        unique_together = ('utente', 'campo')
 

@@ -28,7 +28,11 @@
       <th scope="col">data</th>
       <th scope="col">ora</th>
       <th scope="col">campo</th>
+      {% if oggi != None %}
       <th scope="col">azione</th>
+      {% else %}
+      <th scope="col">utente</th>
+      {% endif %}
     </tr>
   </thead>
   <tbody>
@@ -46,6 +50,10 @@
         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
         Cancella
         </button>
+        {% elif oggi != None %}
+        <a href="{% url 'gestione:aggiungirecensione' p.ora.giorno.campo_id %}" class="btn btn-success" role="button" aria-pressed="true">Lascia Feedback</a>
+        {% else  %}
+        {{p.utente}}
         {% endif %}
     </tr>
 
