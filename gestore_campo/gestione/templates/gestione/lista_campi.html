@@ -44,23 +44,12 @@
 </div>
 
 
-{% comment %} <br>
-<div class="card">
-  <div class="card-header">
-  </div>
-  <div class="card-body">
-    <h5 class="card-title">calcio a {{ c.giocatori }}</h5>
-    <p class="card-text">Un campo di {{ c.societa }} in {{ c.indirizzo }} mq, nel Comune di {{ c.comune }}</p>
-    <p class="card-text"> {{ c.prezzo }} €/h </p>
-   
-    <a  href="{% url 'gestione:detailcampo' c.pk %}" class="btn btn-info">
-    Dettagli</a> 
 
-  </div>
+{%endfor%}
+
+
+
 </div>
-
-<br> {% endcomment %}
-{%endfor%}</div>
 </div>
 
 <br>

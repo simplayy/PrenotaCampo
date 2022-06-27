@@ -15,7 +15,7 @@ class CreateCampoForm(forms.ModelForm):
 
     class Meta:
         model = Campo
-        fields = ["indirizzo", "prezzo", "mq", "giocatori"]
+        fields = ["indirizzo", "prezzo", "mq", "giocatori", "tipo_erba", "cap", "immagine"]
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user')

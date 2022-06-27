@@ -46,7 +46,7 @@
       <td>{{p.ora}}</td>
       <td>{{p.ora.giorno.campo}}</td>
       <td>
-        {% if p.data > oggi %}
+        {% if p.data >= oggi %}
         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
         Cancella
         </button>

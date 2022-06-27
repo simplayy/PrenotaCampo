@@ -25,7 +25,12 @@
   <input type="submit" class="btn btn-success" value="Esegui login">
   
   </form>
+  
+      <a href="{% url 'register' %}" >Registrati</a>
+      {% if "Dirigente" in user.groups.all.0.name or user.is_staff %}
+      <a href="{% url 'registerd' %}" >Registra Diregente</a>
+      {% endif %} 
+      <br>
 
 {% endblock %}
 
-{% block footer %} {% endblock %}

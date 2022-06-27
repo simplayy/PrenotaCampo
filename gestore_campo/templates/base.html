@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
   <style>
   .fakeimg {
     height: 200px;
@@ -26,12 +28,7 @@
 
 <body>
 
-<div class="jumbotron text-center" style="margin-bottom:0">
-{% block header1 %}
-  <h1>Header</h1>
-  <p>Subtitle</p> 
-{% endblock %}
-</div>
+
 
 {% if user.is_authenticated and "ok" in request.GET.login  %}
 
@@ -65,24 +62,27 @@
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
     {% block navbar %}
-    <a class="navbar-brand" href="/gestione"> 
-      <img src={% static 'img/logo.jpg' %} width="30" height="30" class="d-inline-block align-top" alt="">
-      Prenota Campi
-    </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/gestione"> 
+        <img src={% static 'img/logo.jpg' %} width="30" height="30" class="d-inline-block align-top" alt="">
+        Prenota Campi
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item active">
             <a class="nav-link" href={% url 'gestione:listacampi' %}>Lista Campi </a>
           </li>
           <li class="nav-item">
             <a class="nav-link"  href={% url 'gestione:cercacampo' %}>Cerca Campo</a>
           </li>
+          {% if user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link"  href={% url 'gestione:situation' %}>Gestisci Prenotazioni</a>
           </li>
+          {% endif %}
           {% if "Dirigente" in user.groups.all.0.name or user.is_staff %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -97,13 +97,28 @@
           </li>
           {% endif %}
         </ul>
+        <form class="d-flex">
+          {% if user.is_authenticated %}
+          <a class="btn btn-info" href="{% url 'logout' %}" role="button">Logout</a>
+          {% else %}
+          <a class="btn btn-info" href="{% url 'login' %}" role="button">Login</a>
+          {% endif %}
+        </form>
       </div>
+    </div>
     
     
-
+    
+    
+ </nav>
     {% endblock %} 
-  </nav>
-
+ 
+    <div class="jumbotron text-center" style="margin-bottom:10px; margin-top:50px;">
+      {% block header1 %}
+        <h1>Header</h1>
+        <p>Subtitle</p> 
+      {% endblock %}
+      </div>
 
   
   <div class="container" style="margin-top:30px">
@@ -120,14 +135,21 @@
   <div class="jumbotron text-center" style="margin-bottom:0">
     {% block footer %} 
 
-      {% comment %} {% if user.is_authenticated %}
-      <a class="btn btn-info" href="{% url 'logout' %}" role="button">Logout</a>
-      {% else %}
-      <a class="btn btn-info" href="{% url 'register' %}" role="button">Registrati</a>
-      <a class="btn btn-info" href="{% url 'login' %}" role="button">Login</a>
-      {% endif %} {% endcomment %}
-
-      <a class="btn btn-warning" href="/admin/" role="button">Admin Login</a>
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+      <div class="col-md-4 d-flex align-items-center">
+        <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+          <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
+        </a>
+        <span class="text-muted">© 2022 Simone Nicolini</span>
+      </div>
+  
+      <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+        
+        <li class="ms-3"><a class="text-muted" href="https://github.com/simplayy/PrenotaCampo"><i  style="font-size: 2em;" class="fa fa-github" aria-hidden="true"></i></svg></a></li>
+        <li class="ms-3"><a class="text-muted" href="https://offertaformativa.unimore.it/corso/insegnamento?cds_cod=16-215&aa_ord_id=2018&pds_cod=PDS0-2018&aa_off_id=2023&lang=ita&ad_cod=I215-008&aa_corso=3&fac_id=10009&coorte=2021&anno_corrente=2021&durata=3"><i style="font-size: 2em;" class="fa fa-graduation-cap" aria-hidden="true"></i>        </svg></a></li>
+        <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
+      </ul>
+    </footer>
     
     {%  endblock %}
   </div>

@@ -114,6 +114,8 @@ class Prenotazione(models.Model):
     utente = models.ForeignKey(User, on_delete=models.PROTECT,blank=True,null=True,default=None,related_name="utente")
     class Meta:
         unique_together = ('data', 'ora')
+        ordering = ['-data']
+
 
 class Recensione(models.Model):
     utente = models.ForeignKey(User, on_delete=models.PROTECT,blank=True,null=True,default=None,related_name="utente_recensore")

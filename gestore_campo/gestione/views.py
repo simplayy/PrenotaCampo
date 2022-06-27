@@ -25,12 +25,8 @@ class CampoListView(ListView):
     template_name = "gestione/lista_campi.html"
 
 
-class CamposListView(ListView):
-    titolo = "Lista Campi"
-    model = Campo
-    template_name = "gestione/lista_campi.html"
-
-class CreateCampoView(CreateView):
+class CreateCampoView(GroupRequiredMixin, CreateView):
+    group_required = ["Dirigente"]
     title = "Aggiungi un campo"
     form_class = CreateCampoForm
     template_name = "gestione/create_entry.html"
@@ -43,7 +39,8 @@ class CreateCampoView(CreateView):
     def get_success_url(self, **kwargs):
         return reverse_lazy("gestione:detailcampo", kwargs={'pk': self.object.pk})
 
-class CreateGiornoView(CreateView):
+class CreateGiornoView(GroupRequiredMixin, CreateView):
+    group_required = ["Dirigente"]
     title = "Aggiungi un giorno"
     form_class = CreateGiornoForm
     template_name = "gestione/create_entry.html"
@@ -56,7 +53,8 @@ class CreateGiornoView(CreateView):
     def get_success_url(self, **kwargs):
         return reverse_lazy("gestione:detailcampo", kwargs={'pk': self.kwargs['pk_campo']})
 
-class CreateOraView(CreateView):
+class CreateOraView(GroupRequiredMixin, CreateView):
+    group_required = ["Dirigente"]
     title = "Aggiungi un ora "
     form_class = CreateOraForm
     template_name = "gestione/create_entry.html"
@@ -70,7 +68,7 @@ class CreateOraView(CreateView):
     def get_success_url(self, **kwargs):
         return reverse_lazy("gestione:detailcampo", kwargs={'pk': self.kwargs['pk_campo']})
 
-class CreateRecensioneView(CreateView):
+class CreateRecensioneView(LoginRequiredMixin, CreateView):
     title = "Aggiungi una Recensione"
     form_class = CreateRecensioneForm
     template_name = "gestione/create_entry.html"
@@ -110,7 +108,7 @@ class CampoDetailView(DetailView):
         
 
 
-class SelezionaDataFormView(FormView):
+class SelezionaDataFormView(LoginRequiredMixin, FormView):
     template_name = 'gestione/create_entry.html'
     form_class = SelezionaDataForm
     
@@ -123,7 +121,7 @@ class SelezionaDataFormView(FormView):
         self.date=form.cleaned_data["date"]
         return super().form_valid(form)
 
-class CreatePrenotazioneView(CreateView):
+class CreatePrenotazioneView(LoginRequiredMixin, CreateView):
     title = "Aggiungi Prenotazione"
     form_class =  CreatePrenotazioneForm
     template_name = "gestione/create_entry.html"
@@ -147,19 +145,21 @@ class CampiSituationView(GroupRequiredMixin, ListView):
         return Campo.objects.filter(utente_id=self.request.user)
 
     
-class PrenotazioniDirigenteView(ListView):
+class PrenotazioniDirigenteView(GroupRequiredMixin, ListView):
+    group_required = ["Dirigente"]
     context_object_name = 'prenotazione'
     model = Prenotazione
     template_name = "gestione/situation.html"
 
     def get_queryset(self):
+
         return Prenotazione.objects.filter(ora__giorno__campo__utente=self.request.user)
             
     def get_context_data(self, **kwargs):
         context = super(PrenotazioniDirigenteView, self).get_context_data(**kwargs)
         return context
 
-class PrenotazioniView(ListView):
+class PrenotazioniView(LoginRequiredMixin, ListView ):
     context_object_name = 'prenotazione'
     model = Prenotazione
     template_name = "gestione/situation.html"
