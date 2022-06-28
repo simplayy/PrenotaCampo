@@ -13,7 +13,7 @@ class Campo(models.Model):
     giocatori = models.IntegerField(default=11)
     utente = models.ForeignKey(User, on_delete=models.PROTECT,blank=True,null=True,default=None,related_name="campi_posseduti")
     cap = models.IntegerField()
-    immagine = models.ImageField(upload_to='campo', blank=True,null=True,default=None)
+    immagine = models.ImageField(upload_to='campo', default="campo/default.jpg")
     tipo_erba = models.CharField(
         choices=(
             ("Sintetico", "Sintetico"),

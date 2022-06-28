@@ -1,9 +1,10 @@
+import datetime
 from django.test import TestCase
-
+from django.urls import reverse
 from django.test import TestCase
 
 from .models import Campo, User
-from .forms import CreateCampoForm
+from .forms import CreateCampoForm, SelezionaDataForm
 
 class ClassModelTest(TestCase):
 
@@ -52,7 +53,7 @@ class ClassModelTest(TestCase):
 
 
 
-class CreateCampoFormTest(TestCase):
+class FormTest(TestCase):
 
     @classmethod
     # setup di un campo oggetto usato in tutti i metodi
@@ -71,3 +72,61 @@ class CreateCampoFormTest(TestCase):
         form = CreateCampoForm(user= User.objects.get(id=1))
         self.assertTrue(form.fields["mq"].initial == 90)
 
+    # test che verifica l'inserimento di una prenotazione con data nel passato
+    def test_aggiungiprenotazione_form_date_in_past(self):
+        date = datetime.date.today() - datetime.timedelta(days=1)
+        form = SelezionaDataForm(data={'date': date})
+        self.assertFalse(form.is_valid())
+
+    # test che verifica l'inserimento di una prenotazione con data nel futuro
+    def test_aggiungiprenotazione_form_date_in_past(self):
+        date = datetime.date.today() + datetime.timedelta(days=1)
+        form = SelezionaDataForm(data={'date': date})
+        self.assertTrue(form.is_valid())
+
+
+
+class tViewTest(TestCase):
+    
+    @classmethod
+    def setUpTestData(cls):
+        # Create 13 campi for pagination tests
+        number_of_campi = 13
+        User.objects.create(username="foo", password="bar")
+        
+        for campo_id in range(number_of_campi):
+            Campo.objects.create(indirizzo= str(campo_id), prezzo=9, mq=60, giocatori=7, cap="41126", utente=User.objects.get(id=1))
+
+
+    # test che verifica se la pagina listacmpi e' correttamente visualizzata
+    def test_view_url_exists_at_desired_location_list(self):
+        response = self.client.get('/gestione/listacampi/')
+        self.assertEqual(response.status_code, 200)
+
+     # test che verifica se la pagina la pagina dettagli di un campo e' correttamente visualizzata
+    def test_view_url_exists_at_desired_location_detail(self):
+        response = self.client.get('/gestione/detailcampo/1/')
+        self.assertEqual(response.status_code, 200)
+
+    # test che verifica che sia usato il template corretto
+    def test_view_uses_correct_template(self):
+        response = self.client.get('/gestione/listacampi/')
+        self.assertTemplateUsed(response, 'gestione/lista_campi.html')
+
+    # test che verifica che siano visualizzati tutti e 13 i campi
+    def test_pagination_is_ten(self):
+        response = self.client.get('/gestione/listacampi/')
+        self.assertEqual(len(response.context['campo_list']), 13)
+
+    # test che verifica che se non sono loggato non visualizzo la pagina per selezionare la data
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get('/gestione/selezionadata/1/')
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.url.startswith('/login/'))
+
+  # test che verifica che se sono loggato ma non ho i permessi non visualizzo la pagina
+    def test_forbidden_if_logged_in_but_not_correct_permission(self):
+        login = self.client.login(username='foo', password='bar')
+        response = self.client.get('/gestione/aggiungicampo/')
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.url.startswith('/login/'))

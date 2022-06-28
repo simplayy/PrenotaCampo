@@ -92,7 +92,7 @@ class CreateRecensioneForm(forms.ModelForm):
 
     def clean_campo(self):
         if (len(Prenotazione.objects.filter(utente_id=self.cleaned_data['utente']))==0):
-            raise forms.ValidationError("Negro di merda!")
+            raise forms.ValidationError("Lutente non corrisponde con quello della prenotazione!")
         return self.cleaned_data['campo']
 
 class SelezionaDataForm(forms.Form):
