@@ -21,9 +21,10 @@ from django.views.generic.base import RedirectView
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.conf import settings
 from django.conf.urls.static import static
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path(r"^$|^\/$|^home\/$",gestore_campo_home,name="home"),
+    re_path(r"^$|^\/$|^home\/$",auth_views.LoginView.as_view(),name="home"),
     path('gestione/', include('gestione.urls')),
     
     path("register/", UserCreateView.as_view(), name="register"),

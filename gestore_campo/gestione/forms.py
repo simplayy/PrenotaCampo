@@ -3,10 +3,9 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django.contrib.auth.models import User
 from .models import *
-from django.shortcuts import redirect
 import datetime
 
-
+# Classe per creare il form del campo
 class CreateCampoForm(forms.ModelForm):
     helper = FormHelper()
     helper.form_id = "addcampo_crispy_form"
@@ -23,6 +22,7 @@ class CreateCampoForm(forms.ModelForm):
         self.instance.utente=user
 
 
+# Classe per creare il form del giorno
 class CreateGiornoForm(forms.ModelForm):
     helper = FormHelper()
     helper.form_id = "addgiorno_crispy_form"
@@ -42,6 +42,8 @@ class CreateGiornoForm(forms.ModelForm):
         self.fields['campo'].initial = pk_campo
         self.fields['campo'].disabled = True
 
+
+# Classe per creare il form dell'ora
 class CreateOraForm(forms.ModelForm):
     helper = FormHelper()
     helper.form_id = "addora_crispy_form"
@@ -64,6 +66,7 @@ class CreateOraForm(forms.ModelForm):
         self.fields['giorno'].disabled = True
         
 
+# Classe per creare il form della recensione
 class CreateRecensioneForm(forms.ModelForm):
     helper = FormHelper()
     helper.form_id = "addrecensione_crispy_form"
@@ -95,6 +98,7 @@ class CreateRecensioneForm(forms.ModelForm):
             raise forms.ValidationError("Lutente non corrisponde con quello della prenotazione!")
         return self.cleaned_data['campo']
 
+# Classe per creare il form per selezionare la data 
 class SelezionaDataForm(forms.Form):
     helper = FormHelper()
     helper.form_id = "verificadata_crispy_form"
@@ -107,6 +111,8 @@ class SelezionaDataForm(forms.Form):
             raise forms.ValidationError("Non puoi selezionare una data nel passato!")
         return date
 
+
+# Classe per creare il form per aggiungere una prenotazione
 class CreatePrenotazioneForm(forms.ModelForm):
     helper = FormHelper()
     helper.form_id = "addpren_crispy_form"
@@ -136,7 +142,7 @@ class CreatePrenotazioneForm(forms.ModelForm):
 
     
         
-        
+# Classe per creare il form per la ricerca
 class SearchForm(forms.Form):
 
     helper = FormHelper()

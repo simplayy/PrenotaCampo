@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
+{% comment %} Template per il recap delle prenotazioni  {% endcomment %}
 
 
 {% block title %} Home di {{user.username}} {% endblock %} 
 
 {% block header1 %}
-  <h1>Home di {{user.username}} </h1>
+    <h1>Home di {{user.username}} </h1>
   <p>Welcome 
     {% if user.is_authenticated %}
      {{ user.username }}

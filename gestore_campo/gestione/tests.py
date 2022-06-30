@@ -1,11 +1,11 @@
 import datetime
 from django.test import TestCase
-from django.urls import reverse
 from django.test import TestCase
 
 from .models import Campo, User
 from .forms import CreateCampoForm, SelezionaDataForm
 
+# test sui modelli
 class ClassModelTest(TestCase):
 
     @classmethod
@@ -52,7 +52,7 @@ class ClassModelTest(TestCase):
         self.assertEqual(campo.comune, "Modena")
 
 
-
+# test sui form
 class FormTest(TestCase):
 
     @classmethod
@@ -85,8 +85,8 @@ class FormTest(TestCase):
         self.assertTrue(form.is_valid())
 
 
-
-class tViewTest(TestCase):
+# test sulle view
+class ViewTest(TestCase):
     
     @classmethod
     def setUpTestData(cls):

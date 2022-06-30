@@ -9,22 +9,17 @@ from django.views.generic.edit import FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import date
 
-import datetime
-# Create your views here.
-
 # pipenv install django-braces
 from braces.views import GroupRequiredMixin
 
 
-def gestione_home(request):
-    return render(request,template_name="gestione/home.html")
-
+# view per la lista di tutti i campi
 class CampoListView(ListView):
     titolo = "Lista Campi"
     model = Campo
     template_name = "gestione/lista_campi.html"
 
-
+# view per la creazione di un campo
 class CreateCampoView(GroupRequiredMixin, CreateView):
     group_required = ["Dirigente"]
     title = "Aggiungi un campo"
@@ -39,6 +34,7 @@ class CreateCampoView(GroupRequiredMixin, CreateView):
     def get_success_url(self, **kwargs):
         return reverse_lazy("gestione:detailcampo", kwargs={'pk': self.object.pk})
 
+# view per la creazione di un giorno di disponibilita'
 class CreateGiornoView(GroupRequiredMixin, CreateView):
     group_required = ["Dirigente"]
     title = "Aggiungi un giorno"
@@ -53,6 +49,7 @@ class CreateGiornoView(GroupRequiredMixin, CreateView):
     def get_success_url(self, **kwargs):
         return reverse_lazy("gestione:detailcampo", kwargs={'pk': self.kwargs['pk_campo']})
 
+# view per la creazione di un ora di disponibilita' di un giorno
 class CreateOraView(GroupRequiredMixin, CreateView):
     group_required = ["Dirigente"]
     title = "Aggiungi un ora "
@@ -68,6 +65,7 @@ class CreateOraView(GroupRequiredMixin, CreateView):
     def get_success_url(self, **kwargs):
         return reverse_lazy("gestione:detailcampo", kwargs={'pk': self.kwargs['pk_campo']})
 
+# view per la creazione di una recensione
 class CreateRecensioneView(LoginRequiredMixin, CreateView):
     title = "Aggiungi una Recensione"
     form_class = CreateRecensioneForm
@@ -82,6 +80,7 @@ class CreateRecensioneView(LoginRequiredMixin, CreateView):
     def get_success_url(self, **kwargs):
         return reverse_lazy("gestione:detailcampo", kwargs={'pk': self.kwargs['pk_campo']})
 
+# view per la visualizzazione dei dettagli di un campo
 class CampoDetailView(DetailView):
     titolo = "Dettagli campo"
     context_object_name = 'campo'
@@ -107,7 +106,7 @@ class CampoDetailView(DetailView):
 
         
 
-
+# view per la creazione del form per selezionare una data
 class SelezionaDataFormView(LoginRequiredMixin, FormView):
     template_name = 'gestione/create_entry.html'
     form_class = SelezionaDataForm
@@ -121,6 +120,8 @@ class SelezionaDataFormView(LoginRequiredMixin, FormView):
         self.date=form.cleaned_data["date"]
         return super().form_valid(form)
 
+
+# view per la creazione di una prenotazione
 class CreatePrenotazioneView(LoginRequiredMixin, CreateView):
     title = "Aggiungi Prenotazione"
     form_class =  CreatePrenotazioneForm
@@ -136,6 +137,7 @@ class CreatePrenotazioneView(LoginRequiredMixin, CreateView):
         return reverse_lazy("gestione:esitoprenotazione", kwargs={'pk': self.object.pk})
 
 
+# view per la lista dei campi possedutti da un dirigente
 class CampiSituationView(GroupRequiredMixin, ListView):
     group_required = ["Dirigente"]
     model = Campo
@@ -144,7 +146,7 @@ class CampiSituationView(GroupRequiredMixin, ListView):
     def get_queryset(self):
         return Campo.objects.filter(utente_id=self.request.user)
 
-    
+# view per visualizzare le prentoazioni dei campi di un dirigente    
 class PrenotazioniDirigenteView(GroupRequiredMixin, ListView):
     group_required = ["Dirigente"]
     context_object_name = 'prenotazione'
@@ -159,6 +161,8 @@ class PrenotazioniDirigenteView(GroupRequiredMixin, ListView):
         context = super(PrenotazioniDirigenteView, self).get_context_data(**kwargs)
         return context
 
+
+# view per visualizzazione delle proprie prenotazioni
 class PrenotazioniView(LoginRequiredMixin, ListView ):
     context_object_name = 'prenotazione'
     model = Prenotazione
@@ -172,6 +176,7 @@ class PrenotazioniView(LoginRequiredMixin, ListView ):
         context['oggi'] = date.today()
         return context
 
+# view per comunicare l'esito di una prenotazione
 class EsitoPrenotazioneView(LoginRequiredMixin, DetailView):
     model = Prenotazione
     template_name = "gestione/esito_prenotazione.html"
@@ -188,6 +193,8 @@ class EsitoPrenotazioneView(LoginRequiredMixin, DetailView):
             self.sconto="SI" 
         return ctx
 
+
+# view per eliminare una prenotazione 
 class EliminaPrenotazioneView(LoginRequiredMixin, DetailView):
     model = Prenotazione
     template_name = "gestione/cancellazione.html"
@@ -221,6 +228,7 @@ class EliminaPrenotazioneView(LoginRequiredMixin, DetailView):
         print(self.errore)
         return ctx
 
+# view per eliminare un giorno
 class EliminaGiornoView(GroupRequiredMixin, DetailView):
     group_required = ["Dirigente"]
     model = Giorno
@@ -246,6 +254,7 @@ class EliminaGiornoView(GroupRequiredMixin, DetailView):
         print(self.errore)
         return ctx
 
+# view per eliminare un campo
 class EliminaCampoView(GroupRequiredMixin, DetailView):
     group_required = ["Dirigente"]
     model = Campo
@@ -271,6 +280,7 @@ class EliminaCampoView(GroupRequiredMixin, DetailView):
         print(self.errore)
         return ctx
 
+# fuzione per la ricerca dei campi
 def search(request):
 
     if request.method == "POST":
@@ -285,6 +295,7 @@ def search(request):
 
     return render(request,template_name="gestione/ricerca.html",context={"form":form})
 
+# view per lista lista dei campi filtrati per la ricerca
 class CampoRicercaView(CampoListView):
     titolo = "La tua ricerca ha dato come risultato"
 

@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
+{% comment %} Template per comunicare l'esito di una prenotazione {% endcomment %}
 
 {% load crispy_forms_tags %} 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> 
 
-{% block title %} Restituzione di {{object.libro.titolo}} {% endblock %} 
+{% block title %} Restituzione di {{object}} {% endblock %} 
 
 {% block header1 %}
   <h1>Prenotazione con id {{object.pk}}</h1>
