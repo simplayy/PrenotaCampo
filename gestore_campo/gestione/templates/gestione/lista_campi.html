@@ -27,7 +27,7 @@
     <img class="card-img-top" src="http://127.0.0.1:8000/{{ c.immagine.url }}" alt="Card image cap">
     <div class="card-body">
       {% for i in '01234'|make_list %}
-          {% if forloop.counter < c.rating_avg %}
+          {% if forloop.counter <= c.rating_avg %}
           <span class="fa fa-star checked"></span>
           {% else %}
           <span class="fa fa-star"></span>

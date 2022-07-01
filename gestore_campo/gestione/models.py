@@ -1,4 +1,3 @@
-from msilib.schema import Class
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -99,6 +98,7 @@ class Giorno(models.Model):
             2: "Mercoledi",
             3: "Giovedi",
             4: "Venerdi",
+            5: "Sabato",
             6: "Domenica"
 
             }
@@ -109,7 +109,7 @@ class Giorno(models.Model):
 class Ora(models.Model):
     ora = models.PositiveSmallIntegerField(validators=[
             MaxValueValidator(24),
-            MinValueValidator(1)
+            MinValueValidator(0)
         ])
     giorno = models.ForeignKey(Giorno, on_delete=models.CASCADE, default=None, blank=True, null=True)
     class Meta:

@@ -86,16 +86,17 @@ class CampoDetailView(DetailView):
     context_object_name = 'campo'
     model = Campo
     template_name = "gestione/detailcampo.html"
-    sconto = "2"
+    sconto = "0"
     
     
         
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
+        if(self.request.user.id == None):
+            self.sconto="0"
+            return ctx
         p = ctx["object"]
-        print(p.utente_id)
-        p=len(Prenotazione.objects.filter(utente_id=p.utente_id))
-        print(p)
+        p=len(Prenotazione.objects.filter(utente_id=self.request.user.id))        
         if(p%3 == 0): 
             self.sconto="1" 
         elif((p-1)%3 == 0): 

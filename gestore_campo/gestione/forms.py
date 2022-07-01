@@ -53,6 +53,9 @@ class CreateOraForm(forms.ModelForm):
     class Meta:
         model = Ora
         fields = ["ora", "giorno"]
+        labels  = {
+            'ora': ('ora (0-24)'),
+        }
 
     def __init__(self, *args, **kwargs):
 
@@ -122,6 +125,9 @@ class CreatePrenotazioneForm(forms.ModelForm):
     class Meta:
         model = Prenotazione
         fields = ["data", "ora"]
+        labels  = {
+            'ora': ('ora (0-24)'),
+        }
 
     def __init__(self, *args, **kwargs):
 

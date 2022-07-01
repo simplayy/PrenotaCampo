@@ -74,6 +74,7 @@
     <p class="card-text">Campo di calcio di {{ campo.mq }} mq. a {{ campo.comune }}  {{ campo.cap }}, ideale per  un {{ campo.giocatori }} vs {{ campo.giocatori }}, un campo in {{ campo.tipo_erba }}</p>
     <p>Ricordati inoltre della promozione per la quale ogni 3 prenotazioni hai diritto a un 15% di sconto</p>
     <p>
+    {% if "0" != view.sconto %}
     {% if "1" == view.sconto %}
     stato attuale punti 1/3 !
     {% elif  "2" == view.sconto %}
@@ -81,6 +82,8 @@
     {% else %}
     Complimenti Hai diritto al 15% di sconto !
     {% endif %}
+    {% endif %}
+
     </p>
   </div>
   <div class="row">
@@ -179,7 +182,7 @@
             </div>
             <div class="d-flex flex-row align-items-center">
               {% for i in '01234'|make_list %}
-                  {% if forloop.counter < r.stelle %}
+                  {% if forloop.counter <= r.stelle %}
                   <span class="fa fa-star checked"></span>
                   {% else %}
                   <span class="fa fa-star"></span>
