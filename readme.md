@@ -1,8 +1,3 @@
-pipenv shell
-pip install -r requirements.txt
-cd gestore_campo
-python manage.py runserver
-
 # Prenotazione Campi Da Calcio
 Applicazione web basate su django, per lo scopo di fornire un sistema di gestione e prenotazioni dei campi da calcio.
 Progetto Realizzato per l'esame di Tecnologie Web per L'UNIMORE del corso di informatica, per maggiorni informazioni sul progetteo si consgilia la visione della tesina.
@@ -22,7 +17,7 @@ pipenv shell
 ```
 installo i requisiti:
 ```bash
-pipenv shell
+pip install -r requirements.txt
 ```
 entro dentro alla cartella del progetto:
 ```bash
