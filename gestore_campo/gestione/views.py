@@ -21,7 +21,7 @@ class CampoListView(ListView):
 
 # view per la creazione di un campo
 class CreateCampoView(GroupRequiredMixin, CreateView):
-    group_required = ["Dirigente"]
+    group_required = ["Dirigenti"]
     title = "Aggiungi un campo"
     form_class = CreateCampoForm
     template_name = "gestione/create_entry.html"
@@ -36,7 +36,7 @@ class CreateCampoView(GroupRequiredMixin, CreateView):
 
 # view per la creazione di un giorno di disponibilita'
 class CreateGiornoView(GroupRequiredMixin, CreateView):
-    group_required = ["Dirigente"]
+    group_required = ["Dirigenti"]
     title = "Aggiungi un giorno"
     form_class = CreateGiornoForm
     template_name = "gestione/create_entry.html"
@@ -51,7 +51,7 @@ class CreateGiornoView(GroupRequiredMixin, CreateView):
 
 # view per la creazione di un ora di disponibilita' di un giorno
 class CreateOraView(GroupRequiredMixin, CreateView):
-    group_required = ["Dirigente"]
+    group_required = ["Dirigenti"]
     title = "Aggiungi un ora "
     form_class = CreateOraForm
     template_name = "gestione/create_entry.html"
@@ -140,7 +140,7 @@ class CreatePrenotazioneView(LoginRequiredMixin, CreateView):
 
 # view per la lista dei campi possedutti da un dirigente
 class CampiSituationView(GroupRequiredMixin, ListView):
-    group_required = ["Dirigente"]
+    group_required = ["Dirigenti"]
     model = Campo
     template_name = "gestione/lista_campi.html"
 
@@ -149,7 +149,7 @@ class CampiSituationView(GroupRequiredMixin, ListView):
 
 # view per visualizzare le prentoazioni dei campi di un dirigente    
 class PrenotazioniDirigenteView(GroupRequiredMixin, ListView):
-    group_required = ["Dirigente"]
+    group_required = ["Dirigenti"]
     context_object_name = 'prenotazione'
     model = Prenotazione
     template_name = "gestione/situation.html"
@@ -231,7 +231,7 @@ class EliminaPrenotazioneView(LoginRequiredMixin, DetailView):
 
 # view per eliminare un giorno
 class EliminaGiornoView(GroupRequiredMixin, DetailView):
-    group_required = ["Dirigente"]
+    group_required = ["Dirigenti"]
     model = Giorno
     template_name = "gestione/cancellazione_giorno.html"
     errore = "NO_ERRORS"
@@ -257,7 +257,7 @@ class EliminaGiornoView(GroupRequiredMixin, DetailView):
 
 # view per eliminare un campo
 class EliminaCampoView(GroupRequiredMixin, DetailView):
-    group_required = ["Dirigente"]
+    group_required = ["Dirigenti"]
     model = Campo
     template_name = "gestione/cancellazione_campo.html"
     errore = "NO_ERRORS"

@@ -28,7 +28,7 @@
   </form>
   
       <a href="{% url 'register' %}" >Registrati</a>
-      {% if "Dirigente" in user.groups.all.0.name or user.is_staff %}
+      {% if "Dirigenti" in user.groups.all.0.name or user.is_staff %}
       <a href="{% url 'registerd' %}" >Registra Diregente</a>
       {% endif %} 
       <br>

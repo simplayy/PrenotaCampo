@@ -28,3 +28,8 @@ avvio il server:
 ```bash
 python manage.py runserver
 ```
+
+### Note
+
+Per accedere al pannello dell'admin: ```http://127.0.0.1:8000/admin```.
+User ```simone```, Password ```root```.

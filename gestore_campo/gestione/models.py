@@ -10,7 +10,7 @@ from .utils import cap_to_lat, cap_to_lng, calc_dist_fixed, cap_to_comune
 class Campo(models.Model):
     indirizzo = models.CharField(max_length=200)
     prezzo = models.FloatField(max_length=50)
-    mq = models.IntegerField(default=90)
+    mq = models.IntegerField(default=800)
     giocatori = models.IntegerField(default=11)
     utente = models.ForeignKey(User, on_delete=models.PROTECT,blank=True,null=True,default=None,related_name="campi_posseduti")
     cap = models.IntegerField()

@@ -41,13 +41,13 @@
           <div class="col">{{ g }}
           </div>
           <div class="col">
-            {% if "Dirigente" in user.groups.all.0.name or user.is_staff %}
+            {% if "Dirigenti" in user.groups.all.0.name or user.is_staff %}
             <a href="{% url 'gestione:aggiungiora' g.campo_id g.id %}" aria-pressed="true"> Agg. Orari</a>
 
           {% endif %}
           </div>
           <div class="col">
-            {% if "Dirigente" in user.groups.all.0.name or user.is_staff %}
+            {% if "Dirigenti" in user.groups.all.0.name or user.is_staff %}
             <a href="{% url 'gestione:eliminagiorno' g.id %}"  aria-pressed="true"> Elim. Giorno </a>
 
           {% endif %}
@@ -95,11 +95,13 @@
       {% else %}
       <h4 class="mt-3">
         € {{ campo.totale }} 
+       <span style="font-size: 15px;" >totale </span>
       </h4>
+      
       {% endif %}
       
       <a href="{% url 'gestione:selezionadata' object.pk %}" class="btn btn-success" role="button" aria-pressed="true">Verifica Disponibilita</a>            
-      {% if "Dirigente" in user.groups.all.0.name or user.is_staff %}
+      {% if "Dirigenti" in user.groups.all.0.name or user.is_staff %}
       <a href="{% url 'gestione:aggiungigiorno' object.pk %}" class="btn btn-secondary" role="button" aria-pressed="true">Aggiungi Giorno</a>
       <a href="{% url 'gestione:eliminacampo' object.pk %}" class="btn btn-danger" role="button" aria-pressed="true">Elimina Campo</a>
       {% endif %}
